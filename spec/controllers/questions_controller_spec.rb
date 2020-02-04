@@ -29,13 +29,8 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     context 'with valid attributes' do
-      it 'assigns a new Question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(controller.question).to eq question
-      end
-
       it 'change questions attributes' do
-        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for'} }
+        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for' } }
         question.reload
 
         expect(question.title).to eq 'new title for'
@@ -49,7 +44,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid)  } }
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
       it 'does not change question' do
         question.reload
 
