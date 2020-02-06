@@ -1,0 +1,10 @@
+= render 'shared/errors', resource: question.answers.create
+= form_for :answer, local: true, url: question_answers_path(question) do |f|
+
+  =f.label :body
+  p=
+  =f.text_area :body, style: 'width: 60%'
+  p=
+  =f.submit 'Add a answer'
+
+

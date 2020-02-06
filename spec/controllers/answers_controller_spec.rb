@@ -3,8 +3,11 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create :question }
   let(:answer) { create :answer }
+  let(:user) { create(:user) }
 
   describe 'POST #create' do
+    before { login(user) }
+
     let(:answer) { create :answer }
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
@@ -24,12 +27,14 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-render new view' do
         post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
 
   describe 'PATCH #update' do
+    before { login(user) }
+
     let(:answer) { create :answer,  question_id: question.id }
     context 'with valid attributes' do
       it 'change answers attributes' do
@@ -60,6 +65,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    before { login(user) }
+
     let!(:answer) { create(:answer, question_id: question.id) }
 
     it 'delete a answer' do

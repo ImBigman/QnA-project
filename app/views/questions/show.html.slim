@@ -1,2 +1,10 @@
-h1= question.title
-p= question.body
+h4= question.title
+p=  question.body
+
+p=
+-question.answers.each do |a|
+  li= a.body
+
+
+= render 'answers/answer'
+

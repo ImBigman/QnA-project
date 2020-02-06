@@ -1,0 +1,5 @@
+tr
+  td.title style="text-align: center"
+    = link_to question.title, question_path(question), class: 'question_link'
+  td.answers style="text-align: center"
+    = question.answers.count

@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   expose(:question)
   expose(:answers, ancestor: :question)
   expose(:answer)
@@ -6,9 +7,9 @@ class AnswersController < ApplicationController
   def create
     @answer = question.answers.new(answer_params)
     if @answer.save
-      redirect_to @answer.question
+      redirect_to @answer.question, notice: 'Your answer has been successfully added.'
     else
-      render :new
+      redirect_to @answer.question, alert: 'Your answer has not been saved!'
     end
   end
 

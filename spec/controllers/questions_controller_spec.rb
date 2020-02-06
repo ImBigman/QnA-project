@@ -53,7 +53,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not change question' do
         question.reload
 
-        expect(question.title).to eq 'Its test question title'
+        expect(question.title).to eq question.title
         expect(question.body).to eq 'Its test question body'
       end
 
