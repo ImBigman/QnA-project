@@ -24,14 +24,14 @@ feature 'User can create answer of the question', %q(
       expect(page).to have_content 'This is test answer for some question'
     end
 
-    scenario 'ask a question with errors' do
+    scenario 'write a answer with errors' do
       click_on 'Add a answer'
 
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthenticated user try to ask a question ' do
+  scenario 'Unauthenticated user try write a answer ' do
     visit question_path(question)
     click_on 'Add a answer'
 
