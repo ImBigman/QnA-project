@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @answer.question, notice: 'Your answer has been successfully added.'
     else
-      redirect_to @answer.question, alert: 'Your answer has not been saved! ' + @answer.errors.full_messages.first.to_s
+      redirect_to @answer.question, alert: 'Your answer has not been saved! ' + errors(@answer).to_s
     end
   end
 
@@ -35,6 +35,12 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def errors(obj)
+    array = []
+    obj.errors.full_messages.each { |error| array << error }
+    array.join(', ')
+  end
 
   def answer
     @answer ||= params[:id] ? Answer.find(params[:id]) : Answer.new
