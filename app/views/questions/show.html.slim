@@ -1,10 +1,30 @@
-h4= question.title
-p=  question.body
+strong Title:
+|  #{question.title}
+p
+  strong Question:
+  |  #{question.body}
+p
+  strong from:
+  |  #{question.author.email}
 
-p=
--question.answers.each do |a|
-  li= a.body
+=link_to 'Delete a question',
+        question_path(question),
+        method: :delete,
+        data: {confirm: 'Are you sure?'}
+p
+table
+  -question.answers.each do |a|
+    tr = a.body
+    | &nbsp;
+    tr
+    span style='font-size: 8pt'  =link_to 'Delete',
+    answer_path(a),
+    method: :delete,
+    id: 'answer_delete',
+    data: {confirm: 'Are you sure?'}
+    p style='font-size: 8pt' answer's author:
+           #{a.author.email}
 
-
+br
 = render 'answers/answer'
 

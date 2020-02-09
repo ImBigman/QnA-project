@@ -6,7 +6,7 @@ feature 'User can create answer of the question', %q(
  I'd like to be able to add an answer"
 ) do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given(:question) { create(:question, author_id: user.id) }
 
   describe 'Authenticated user' do
 
@@ -17,7 +17,7 @@ feature 'User can create answer of the question', %q(
     end
 
     scenario 'write a answer' do
-      fill_in 'Body', with: 'This is test answer for some question'
+      fill_in 'answer[body]', with: 'This is test answer for some question'
       click_on 'Add a answer'
 
       expect(page).to have_content 'Your answer has been successfully added.'

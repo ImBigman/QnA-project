@@ -1,0 +1,14 @@
+div
+  | Welcome to QnA!
+  |&nbsp;
+  - if user_signed_in?
+    span style="text-align: left"
+      =current_user.email
+      |&nbsp;
+      =link_to 'Sign out', destroy_user_session_path, method: :delete
+  - else
+    span style="text-align: right"
+      =link_to 'Sign in', new_user_session_path
+      |&nbsp;
+      =link_to 'Registration', new_user_registration_path
+

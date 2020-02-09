@@ -32,6 +32,7 @@ feature 'User can create a questions', %q(
       expect(page).to have_content "Title can't be blank"
     end
   end
+
   scenario 'Unauthenticated user try to ask a question ' do
     visit questions_path
     click_on 'Ask question'

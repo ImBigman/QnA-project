@@ -6,5 +6,9 @@ FactoryBot.define do
     email
     password { '12345678' }
     password_confirmation { '12345678' }
+
+    trait :invalid do
+      password_confirmation { '123456711' }
+    end
   end
 end

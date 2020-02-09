@@ -7,7 +7,10 @@ feature 'User can sign in', %q(
 ) do
   given(:user) { create(:user) }
 
-  background { visit new_user_session_path }
+  background do
+    visit questions_path
+    click_on 'Sign in'
+  end
 
   scenario 'Registered user try to sign in' do
     fill_in 'Email', with: user.email
