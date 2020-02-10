@@ -1,12 +1,12 @@
-tr = answer.body
-| &nbsp;
-tr
-  - if current_user&.owner?(answer)
-    span style='font-size: 8pt'  =link_to 'Delete',
-        answer_path(answer),
-        method: :delete,
-        id: 'answer_delete',
-        data: {confirm: 'Are you sure?'}
-
-p style='font-size: 8pt' answer's author:
-           #{answer.user.email}
+-if answer.persisted?
+  tr = answer.body
+  | &nbsp;
+  tr
+    - if current_user&.owner?(answer)
+      span style='font-size: 8pt'  =link_to 'Delete',
+          answer_path(answer),
+          method: :delete,
+          id: 'answer_delete',
+          data: {confirm: 'Are you sure?'}
+      p style='font-size: 8pt' answer's author:
+        #{answer.user.email}

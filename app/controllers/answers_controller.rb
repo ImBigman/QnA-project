@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @answer.question, notice: 'Your answer has been successfully added.'
     else
-      redirect_to @answer.question, alert: 'Your answer has not been saved! ' + errors(@answer).to_s
+      render 'questions/show'
     end
   end
 

@@ -28,7 +28,7 @@ feature 'User can create answer of the question', %q(
       click_on 'Add a answer'
 
       expect(page).to have_content "Body can't be blank"
-      expect(current_path).to eq question_path(question)
+      expect(current_path).to eq question_answers_path(question)
     end
   end
 
