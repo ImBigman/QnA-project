@@ -36,12 +36,6 @@ class AnswersController < ApplicationController
 
   private
 
-  def errors(obj)
-    array = []
-    obj.errors.full_messages.each { |error| array << error }
-    array.join(', ')
-  end
-
   def answer
     @answer ||= params[:id] ? Answer.find(params[:id]) : Answer.new
   end

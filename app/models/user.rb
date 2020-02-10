@@ -12,7 +12,5 @@ class User < ApplicationRecord
 
   def owner?(resource)
     resource.user == self
-    #TODO fix this method
   end
 end
-
