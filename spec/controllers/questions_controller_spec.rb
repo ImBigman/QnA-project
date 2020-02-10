@@ -2,20 +2,18 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, author_id: user.id) }
+  let(:user1) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:questions) { create_list(:question, 3, user: user) }
 
   describe 'POST #index' do
     before do
-      question1 = create(:question, author_id: user.id)
-      question2 = create(:question, author_id: user.id)
-      question3 = create(:question, author_id: user.id)
-      @questions = [question1, question2, question3]
       login(user)
       get :index
     end
 
     it 'populates of array of all questions' do
-      expect(assigns(:questions)).to match_array(@questions)
+      expect(assigns(:questions)).to match_array(questions)
     end
 
     it 'renders index view' do
@@ -55,27 +53,47 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    before { login(user) }
+    context 'As user' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'saves a new question in the database' do
-        expect { post :create, params: { question: attributes_for(:question, author_id: user.id) } }.to change(Question, :count).by(1)
+      context 'with valid attributes' do
+        it 'saves a new question in the database' do
+          expect { post :create, params: { question: attributes_for(:question, user: user) } }.to change(Question, :count).by(1)
+        end
+
+        it 'becomes an author of the question' do
+          post :create, params: { question: attributes_for(:question, user: user) }
+          expect(question.user).to eq user
+        end
+
+        it 'redirect to show view' do
+          post :create, params: { question: attributes_for(:question, user: user) }
+          expect(response).to redirect_to assigns(:question)
+        end
       end
 
-      it 'redirect to show view' do
-        post :create, params: { question: attributes_for(:question, author_id: user.id) }
-        expect(response).to redirect_to assigns(:question)
+      context 'with invalid attributes' do
+        it 'does not save the question' do
+          expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        end
+
+        it 're-render new view' do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+          expect(response).to render_template :new
+        end
       end
     end
 
-    context 'with invalid attributes' do
+    context 'As guest' do
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        expect { post :create, params: { question: attributes_for(:question, user: user) } }.to_not change(Question, :count)
       end
 
-      it 're-render new view' do
-        post :create, params: { question: attributes_for(:question, :invalid) }
-        expect(response).to render_template :new
+      it 'redirected to sing in page' do
+        post :create, params: { question: attributes_for(:question, user: user) }
+
+        expect(response.status).to eq 302
+        expect(response).to redirect_to '/users/sign_in'
       end
     end
   end
@@ -85,12 +103,12 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question, author_id: user.id) }
+        patch :update, params: { id: question, question: attributes_for(:question, user: user) }
         expect(assigns(:question)).to eq question
       end
 
       it 'change questions attributes' do
-        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for', author_id: user.id } }
+        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for', user: user } }
         question.reload
 
         expect(question.title).to eq 'new title for'
@@ -98,7 +116,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'redirect to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question, author_id: user.id) }
+        patch :update, params: { id: question, question: attributes_for(:question, user: user) }
         expect(response).to redirect_to assigns(:question)
       end
     end
@@ -119,16 +137,48 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
+    context 'As an author' do
+      before { login(user) }
 
-    let!(:question) { create(:question, author_id: user.id) }
+      let!(:question) { create(:question, user: user) }
 
-    it 'delete a question' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      it 'delete a question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+      it 'redirect to index view' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
-    it 'redirect to index view' do
-      delete :destroy, params: { id: question }
-      expect(response).to redirect_to questions_path
+
+    context 'As not an author' do
+      before { login(user1) }
+
+      let!(:question) { create(:question, user: user) }
+
+      it 'does not delete the answer' do
+        expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
+      end
+
+      it 'get flash alert message' do
+        delete :destroy, params: { id: question }
+        expect(flash[:alert]).to eq "You can't delete not your question!"
+      end
+    end
+
+    context 'As guest' do
+      let!(:question) { create(:question, user: user) }
+
+      it 'does not delete the question' do
+        expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
+      end
+
+      it 'redirected to sing in page' do
+        delete :destroy, params: { id: question }
+
+        expect(response.status).to eq 302
+        expect(response).to redirect_to '/users/sign_in'
+      end
     end
   end
 end

@@ -6,10 +6,9 @@ feature 'User can create answer of the question', %q(
  I'd like to be able to add an answer"
 ) do
   given(:user) { create(:user) }
-  given(:question) { create(:question, author_id: user.id) }
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
-
     background do
       sign_in(user)
 
@@ -22,12 +21,14 @@ feature 'User can create answer of the question', %q(
 
       expect(page).to have_content 'Your answer has been successfully added.'
       expect(page).to have_content 'This is test answer for some question'
+      expect(current_path).to eq question_path(question)
     end
 
     scenario 'write a answer with errors' do
       click_on 'Add a answer'
 
       expect(page).to have_content "Body can't be blank"
+      expect(current_path).to eq question_path(question)
     end
   end
 

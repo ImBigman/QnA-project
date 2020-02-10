@@ -7,6 +7,10 @@ class User < ApplicationRecord
          :rememberable,
          :validatable
 
-  has_many :author_questions, class_name: 'Question', foreign_key: :author_id, dependent: :destroy
-  has_many :author_answers, class_name: 'Answer', foreign_key: :author_id, dependent: :destroy
+  has_many :questions, dependent: :destroy
+  has_many :answers, dependent: :destroy
+
+  def owner?(resource)
+    resource.user.id == id
+  end
 end

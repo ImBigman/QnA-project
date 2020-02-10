@@ -12,7 +12,7 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def create
-    @question = current_user.author_questions.build(question_params)
+    @question = current_user.questions.build(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
@@ -29,9 +29,9 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if question.owner?(current_user)
+    if current_user.owner?(question)
       question.destroy
-      redirect_to questions_path, notice: "Your question '#{question.title}' successfully deleted."
+      redirect_to questions_path, notice: "Your question '#{question.title[0..-2]}' successfully deleted."
     else
       redirect_to @question, alert: "You can't delete not your question!"
     end

@@ -9,7 +9,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = question.answers.new(answer_params)
-    @answer.author_id = current_user.id
+    @answer.user = current_user
     if @answer.save
       redirect_to @answer.question, notice: 'Your answer has been successfully added.'
     else
@@ -26,11 +26,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if answer.owner?(current_user)
+    if current_user.owner?(answer)
       answer.destroy
       redirect_to answer.question, notice: 'Your answer successfully deleted.'
     else
-      redirect_to answer.question, alert: "You can't delete not your question!"
+      redirect_to answer.question, alert: "You can't delete not your answer!"
     end
   end
 

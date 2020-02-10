@@ -5,26 +5,16 @@ p
   |  #{question.body}
 p
   strong from:
-  |  #{question.author.email}
-
-=link_to 'Delete a question',
-        question_path(question),
-        method: :delete,
-        data: {confirm: 'Are you sure?'}
+  |  #{question.user.email}
+  | &nbsp;
+  - if current_user&.owner?(question)
+    span style='font-size: 8pt' =link_to 'Delete a question',
+            question_path(question),
+            method: :delete,
+            data: {confirm: 'Are you sure?'}
 p
 table
-  -question.answers.each do |a|
-    tr = a.body
-    | &nbsp;
-    tr
-    span style='font-size: 8pt'  =link_to 'Delete',
-    answer_path(a),
-    method: :delete,
-    id: 'answer_delete',
-    data: {confirm: 'Are you sure?'}
-    p style='font-size: 8pt' answer's author:
-           #{a.author.email}
-
+  =render question.answers
 br
-= render 'answers/answer'
+= render 'answers/form'
 

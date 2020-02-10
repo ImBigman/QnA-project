@@ -5,8 +5,8 @@
  I'd like to be able to delete question"
 ) do
    given(:user) { create(:user) }
-   given(:user1) { create(:user) }
-   given(:question) { create(:question, author_id: user.id) }
+   given(:question) { create(:question, user: user) }
+   given!(:question1) { create(:question, user: user) }
 
    describe 'Authenticated user' do
      scenario 'delete a question as author' do
@@ -16,22 +16,8 @@
 
        click_on 'Delete a question'
 
-       expect(page).to have_content 'successfully deleted.'
+       expect(page).to have_content "Your question '#{question.title[0..-2]}' successfully deleted."
+       expect(page).to_not have_content question.title
      end
-
-     scenario 'delete a question as not author' do
-       sign_in(user1)
-       visit question_path(question)
-       click_on 'Delete a question'
-
-       expect(page).to have_content "You can't delete not your question!"
-     end
-   end
-
-   scenario 'Unauthenticated user try to ask a question ' do
-     visit question_path(question)
-     click_on 'Delete a question'
-
-     expect(page).to have_content 'You need to sign in or sign up before continuing.'
    end
  end
