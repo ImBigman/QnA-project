@@ -38,7 +38,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'becomes an author of the answer' do
           post :create, params: { question_id: question, user: user, answer: attributes_for(:answer) }
-          expect(answer.user).to eq user
+          expect(assigns(:answer).user).to eq user
         end
 
         it 'redirect to show view' do
@@ -150,7 +150,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer } }.not_to change(question.answers, :count)
       end
 
-      it 'redirected to sing in page' do
+      it 'redirected to sign in page' do
         delete :destroy, params: { id: answer }
 
         expect(response.status).to eq 302

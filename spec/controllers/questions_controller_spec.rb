@@ -63,7 +63,7 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'becomes an author of the question' do
           post :create, params: { question: attributes_for(:question, user: user) }
-          expect(question.user).to eq user
+          expect(assigns(:question).user).to eq user
         end
 
         it 'redirect to show view' do
