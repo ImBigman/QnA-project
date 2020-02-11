@@ -1,14 +1,14 @@
-div
-  =link_to 'Welcome to QnA!', questions_path
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  =link_to 'Welcome to QnA!', questions_path, class:"btn btn-primary text-light"
   |&nbsp;
-  - if user_signed_in?
-    span style="text-align: left"
+  #navbarNavAltMarkup.collapse.navbar-collapse
+    .navbar-nav.font-weight-bolder.text-uppercase.h5
+    - if user_signed_in?
       =current_user.email
       |&nbsp;
-      =link_to 'Sign out', destroy_user_session_path, method: :delete
-  - else
-    span style="text-align: right"
-      =link_to 'Sign in', new_user_session_path
+      =link_to 'Sign out', destroy_user_session_path, method: :delete,  class:"nav-item nav-link"
+    - else
+      =link_to 'Sign in', new_user_session_path,  class:"nav-item nav-link"
       |&nbsp;
-      =link_to 'Registration', new_user_registration_path
+      =link_to 'Registration', new_user_registration_path,  class:"nav-item nav-link"
 

@@ -11,6 +11,6 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
 
   def owner?(resource)
-    resource.user_id = id
+    resource.user_id == id
   end
 end

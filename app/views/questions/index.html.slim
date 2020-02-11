@@ -1,8 +1,8 @@
-p= link_to 'Ask question', new_question_path
+p= link_to 'Ask question', new_question_path, class:"btn btn-outline-primary"
 
-table.table
+table class="table mt-3"
   tr
-    th style="text-align: center"
+    th
       | Question title
 
   = render @questions
