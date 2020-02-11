@@ -1,10 +1,1 @@
-= render 'shared/errors', resource: question
-
-= form_for :question, local: true, url: questions_path do |f|
-  =f.label :title
-  =f.text_field :title
-
-  =f.label :body
-  =f.text_area :body
-
-  =f.submit 'Save a question'
+=render 'questions/form'

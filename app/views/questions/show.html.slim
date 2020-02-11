@@ -1,2 +1,20 @@
-h1= question.title
-p= question.body
+strong Title:
+|  #{question.title}
+p
+  strong Question:
+  |  #{question.body}
+p
+  strong from:
+  |  #{question.user.email}
+  | &nbsp;
+  - if current_user&.owner?(question)
+    span style='font-size: 8pt' =link_to 'Delete a question',
+            question_path(question),
+            method: :delete,
+            data: {confirm: 'Are you sure?'}
+p
+table
+  =render question.answers
+br
+=render 'answers/form'
+

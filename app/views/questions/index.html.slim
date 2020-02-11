@@ -1,1 +1,8 @@
 p= link_to 'Ask question', new_question_path
+
+table.table
+  tr
+    th style="text-align: center"
+      | Question title
+
+  = render @questions
