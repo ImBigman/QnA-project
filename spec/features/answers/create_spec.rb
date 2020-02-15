@@ -15,27 +15,30 @@ feature 'User can create answer of the question', %q(
       visit question_path(question)
     end
 
-    scenario 'write a answer' do
+    scenario 'write a answer', js: true do
       fill_in 'answer[body]', with: 'This is test answer for some question'
       click_on 'Add a answer'
 
-      expect(page).to have_content 'Your answer has been successfully added.'
-      expect(page).to have_content 'This is test answer for some question'
+      within('.answers') do
+        expect(page).to have_text('This is test answer for some question')
+      end
+
       expect(current_path).to eq question_path(question)
     end
 
-    scenario 'write a answer with errors' do
+    scenario 'write a answer with errors', js: true do
       click_on 'Add a answer'
 
       expect(page).to have_content "Body can't be blank"
-      expect(current_path).to eq question_answers_path(question)
+      expect(current_path).to eq question_path(question)
     end
   end
 
   scenario 'Unauthenticated user try write a answer ' do
     visit question_path(question)
+
     click_on 'Add a answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(current_path).to eq new_user_session_path
   end
 end

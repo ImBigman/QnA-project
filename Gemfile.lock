@@ -64,7 +64,11 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
+<<<<<<< HEAD
     bootstrap (4.3.1)
+=======
+    bootstrap (4.4.1)
+>>>>>>> add AJAX methods, rewrite spec for js, add make_better method
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
@@ -211,6 +215,9 @@ GEM
       rubyzip (>= 1.2.2)
     shoulda-matchers (4.2.0)
       activesupport (>= 4.2.0)
+    simple_form (5.0.2)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
     slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -265,7 +272,11 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.4.2)
+<<<<<<< HEAD
   bootstrap (~> 4.3.1)
+=======
+  bootstrap (~> 4.4.1)
+>>>>>>> add AJAX methods, rewrite spec for js, add make_better method
   byebug
   capybara (>= 2.15)
   devise
@@ -283,6 +294,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver
   shoulda-matchers
+  simple_form
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)

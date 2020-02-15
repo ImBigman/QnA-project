@@ -1,37 +1,29 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index]
 
-  def show; end
-
-  def new; end
-
-  def edit; end
+  def index
+    question.answers
+  end
 
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to @answer.question, notice: 'Your answer has been successfully added.'
-    else
-      render 'questions/show'
-    end
+    @answer.save
   end
 
   def update
-    if answer.update(answer_params)
-      redirect_to @answer.question, notice: 'Your answer successful updated!'
-    else
-      render :edit, alert: 'Your answer has not been saved!'
-    end
+    answer.update(answer_params)
   end
 
   def destroy
-    if current_user.owner?(answer)
-      answer.destroy
-      redirect_to answer.question, notice: 'Your answer successfully deleted.'
-    else
-      redirect_to answer.question, alert: "You can't delete not your answer!"
-    end
+    current_user.owner?(answer) ? answer.destroy : nil
+  end
+
+  def make_better
+    @question = answer.question
+    return unless current_user.owner?(answer.question)
+
+    @question.answers.by_worth.first.nil? ?  answer.up_to_best : @question.answers.by_worth.first.usual && answer.up_to_best
   end
 
   private
