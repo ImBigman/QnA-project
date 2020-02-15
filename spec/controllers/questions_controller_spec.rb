@@ -168,7 +168,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
       end
 
-      it 'redirected to sing in page' do
+      it 'redirected to sign in page' do
         delete :destroy, params: { id: question }
 
         expect(response.status).to eq 302
@@ -177,5 +177,3 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 end
-
-

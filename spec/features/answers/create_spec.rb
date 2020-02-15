@@ -37,8 +37,6 @@ feature 'User can create answer of the question', %q(
   scenario 'Unauthenticated user try write a answer ' do
     visit question_path(question)
 
-    click_on 'Add a answer'
-
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_link('Add a answer', href: '')
   end
 end

@@ -1,6 +1,6 @@
 $('.question-edit-errors').html('<%= render 'shared/errors', resource: @question %>');
 
-<% unless question.errors.present? %>
+<% if question.errors.blank? %>
   $('.question-title').html('<%= j question.title %>');
   $('.question-body').html('<%= j question.body %>');
   $('#edit-question').hide()

@@ -1,6 +1,6 @@
 document.addEventListener('turbolinks:load', function() {
-    $('.question').on('click','#question-edit', function (button) {
-        button.preventDefault();
+    $('.question').on('click','#question-edit', function (event) {
+        event.preventDefault();
         $(this).hide();
         $('form#edit-question').show();
     } )

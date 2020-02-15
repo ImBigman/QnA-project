@@ -63,16 +63,12 @@ GEM
     bcrypt (3.1.13)
     bindex (0.8.1)
     bootsnap (1.4.5)
+      autoprefixer-rails (>= 9.1.0)
+      bootstrap (= 4.4.1)
       msgpack (~> 1.0)
-<<<<<<< HEAD
-<<<<<<< HEAD
-    bootstrap (4.3.1)
-=======
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     bootstrap (4.4.1)
->>>>>>> add AJAX methods, rewrite spec for js, add make_better method
-=======
-    bootstrap (4.4.1)
->>>>>>> 9519cadd25f0943f354025bf4da33c2692d7caa4
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
@@ -276,15 +272,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.4.2)
-<<<<<<< HEAD
-<<<<<<< HEAD
-  bootstrap (~> 4.3.1)
-=======
   bootstrap (~> 4.4.1)
->>>>>>> add AJAX methods, rewrite spec for js, add make_better method
-=======
-  bootstrap (~> 4.4.1)
->>>>>>> 9519cadd25f0943f354025bf4da33c2692d7caa4
   byebug
   capybara (>= 2.15)
   devise

@@ -4,7 +4,7 @@
   =f.text_area :body, style: 'width: 60%'
   br
   - if current_user.nil?
-    =link_to 'Add a answer', new_user_session_path, class:"btn btn-outline-primary"
+    =link_to 'Add a answer','', class: 'btn btn-primary disabled', :disabled => true
     span.text-secondary.ml-5 You need to sign in or sign up before continuing.
   -else
     =f.submit 'Add a answer', class: 'btn btn-outline-primary'

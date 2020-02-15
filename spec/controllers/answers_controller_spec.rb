@@ -34,7 +34,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to_not change(question.answers, :count)
       end
 
-      it 'redirected to sing in page' do
+      it 'redirected to sign in page' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
 
         expect(response.status).to eq 302
@@ -69,7 +69,10 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'with invalid attributes' do
         it 'does not change answer' do
-          expect { patch(:update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js) }.to_not change(answer, :body)
+          patch(:update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js)
+          answer.reload
+
+          expect(answer.body).to eq answer.body
         end
 
         it 're-render edit view' do
@@ -83,7 +86,10 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user1) }
 
       it 'does not change answer' do
-        expect { patch(:update, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js) }.to_not change(answer, :body)
+        patch(:update, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js)
+        answer.reload
+
+        expect(answer.body).to eq answer.body
       end
     end
   end
@@ -133,7 +139,13 @@ RSpec.describe AnswersController, type: :controller do
         patch :make_better, params: { id: answer, answer: attributes_for(:answer) }, format: :js
         answer.reload
 
-        expect(answer.best).to eq 'true'
+        expect(answer).to be_best
+      end
+
+      it 'render make_better view' do
+        patch :make_better, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+
+        expect(response).to render_template :make_better
       end
     end
 

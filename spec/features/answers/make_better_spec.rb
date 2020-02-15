@@ -33,5 +33,13 @@ feature 'Question author can choose the best answer', %q(
       expect(page).to have_content answer1.body
       expect(page.has_css?('#answer-best')).to be false
     end
+
+    scenario 'as guest', js: true do
+      visit question_path(question)
+
+      expect(page).to have_content answer.body
+      expect(page).to have_content answer1.body
+      expect(page.has_css?('#answer-best')).to be false
+    end
   end
 end
