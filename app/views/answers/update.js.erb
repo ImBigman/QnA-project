@@ -1,0 +1,8 @@
+$('.answer-edit-errors').html('<%= render 'shared/errors', resource: @answer %>');
+
+<% unless answer.errors.present? %>
+    $('.answer_id_<%= answer.id %>_body').html('<%= j answer.body %>');
+    $('#edit-answer-<%= answer.id %>').hide()
+    $('[data-answer-id="<%= answer.id %>"]').show()
+<% end %>
+
