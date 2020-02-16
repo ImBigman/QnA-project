@@ -8,8 +8,10 @@ class Answer < ApplicationRecord
 
   scope :by_worth, -> { where(best: true) }
 
-  def up_to_best
-    question.answers.by_worth.each { |answer| answer.update!(best: false) }
-    update!(best: true)
+  def up_to_best!
+    Answer.transaction do
+      question.answers.by_worth.update_all(best: false)
+      update!(best: true)
+    end
   end
 end

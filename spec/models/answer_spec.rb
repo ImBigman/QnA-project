@@ -33,7 +33,7 @@ RSpec.describe Answer, type: :model do
   end
 
   it 'up_to_best make answer the best' do
-    answer1.up_to_best
+    answer1.up_to_best!
     expect(answer1).to be_best
   end
 end

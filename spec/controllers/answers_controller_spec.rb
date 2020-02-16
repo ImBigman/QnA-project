@@ -91,6 +91,11 @@ RSpec.describe AnswersController, type: :controller do
 
         expect(answer.body).to eq answer.body
       end
+
+      it 're-render edit view' do
+        patch(:update, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js)
+        expect(response).to render_template :update
+      end
     end
   end
 
@@ -153,7 +158,10 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user1) }
 
       it 'does not change answer' do
-        expect { patch :make_better, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js }.to_not change(answer, :best)
+        patch :make_better, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js
+        answer.reload
+
+        expect { answer.best }.to_not change(answer, :best)
       end
 
       it 'render make_better view' do

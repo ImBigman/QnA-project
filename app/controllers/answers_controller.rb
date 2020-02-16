@@ -21,7 +21,7 @@ class AnswersController < ApplicationController
 
   def make_better
     @question = answer.question
-    answer.up_to_best if current_user.owner?(answer.question)
+    answer.up_to_best! if current_user.owner?(answer.question)
   end
 
   private
