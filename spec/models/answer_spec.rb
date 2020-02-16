@@ -9,8 +9,9 @@ RSpec.describe Answer, type: :model do
 
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  let(:answer) { create(:answer, user: user, question: question, best: true) }
-  let(:answer1) { create(:answer, user: user, question: question, best: false) }
+  let!(:answer) { create(:answer, user: user, question: question, best: true) }
+  let!(:answer1) { create(:answer, user: user, question: question) }
+  let!(:answer2) { create(:answer, user: user, question: question) }
 
   describe '#best?' do
     it 'is the best?' do
@@ -28,12 +29,27 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'excludes answer without best: false' do
-      expect(Answer.by_worth).not_to eq [answer1]
+      expect(Answer.by_worth).not_to eq [answer1, answer2]
     end
   end
 
-  it 'up_to_best make answer the best' do
-    answer1.up_to_best!
-    expect(answer1).to be_best
+  describe 'up_to_best!' do
+    before { answer1.up_to_best! }
+
+    it 'make answer the best' do
+      expect(answer1).to be_best
+    end
+
+    it 'makes the old best answer ordinary' do
+      answer.reload
+
+      expect(answer).not_to be_best
+    end
+
+    it 'should make the right order' do
+      [answer, answer2].each(&:reload)
+
+      expect(Answer.default_scoped.to_sql).to eq Answer.all.order(best: :desc).order(:created_at).to_sql
+    end
   end
 end

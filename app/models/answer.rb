@@ -10,7 +10,7 @@ class Answer < ApplicationRecord
 
   def up_to_best!
     Answer.transaction do
-      question.answers.by_worth.update_all(best: false)
+      question.answers.update_all(best: false)
       update!(best: true)
     end
   end
