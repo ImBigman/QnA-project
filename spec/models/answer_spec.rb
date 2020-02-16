@@ -24,11 +24,11 @@ RSpec.describe Answer, type: :model do
 
   describe '.by_worth scope' do
     it 'includes answer with best: true' do
-      expect(Answer.by_worth).to eq Answer.all.where(best: true)
+      expect(Answer.by_worth).to eq [answer]
     end
 
     it 'excludes answer without best: false' do
-      expect(Answer.by_worth).not_to eq Answer.all.where(best: false)
+      expect(Answer.by_worth).not_to eq [answer1]
     end
   end
 

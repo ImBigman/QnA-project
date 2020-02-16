@@ -16,12 +16,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    current_user.owner?(answer) ? answer.destroy : nil
+    answer.destroy if current_user.owner?(answer)
   end
 
   def make_better
     @question = answer.question
-    current_user.owner?(answer.question) ? answer.up_to_best : nil
+    answer.up_to_best if current_user.owner?(answer.question)
   end
 
   private

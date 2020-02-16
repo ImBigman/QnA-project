@@ -155,6 +155,12 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not change answer' do
         expect { patch :make_better, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js }.to_not change(answer, :best)
       end
+
+      it 'render make_better view' do
+        patch :make_better, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+
+        expect(response).to render_template :make_better
+      end
     end
   end
 end
