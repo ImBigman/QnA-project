@@ -32,7 +32,7 @@
    end
 
    describe 'Guest' do
-     scenario 'have no ' do
+     scenario 'cannot delete the question' do
        visit question_path(question)
        expect(page).to have_content "from: #{user.email}"
        expect(page).to have_content question.title

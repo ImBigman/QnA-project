@@ -16,19 +16,19 @@ feature 'User can sign up', %q(
   describe 'Unregistered user' do
 
     background do
-      fill_in 'Email', with: 'test_mail@test.com'
-      fill_in 'Password', with: '12345678'
+      fill_in 'user[email]', with: 'test_mail@test.com'
+      fill_in 'user[password]', with: '12345678'
     end
 
     scenario 'try to sign up' do
-      fill_in 'Password confirmation', with: '12345678'
+      fill_in 'user[password_confirmation]', with: '12345678'
       click_on 'Sign up'
 
       expect(page).to have_content 'Welcome! You have signed up successfully.'
     end
 
     scenario 'try to sign up with errors' do
-      fill_in 'Password confirmation', with: '12345678911'
+      fill_in 'user[password_confirmation]', with: '12345678911'
       click_on 'Sign up'
 
       expect(page).to have_content "Password confirmation doesn't match Password"
@@ -36,9 +36,9 @@ feature 'User can sign up', %q(
   end
 
   scenario 'Registered user try to sign up' do
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    fill_in 'Password confirmation', with: user.password_confirmation
+    fill_in 'user[email]', with: user.email
+    fill_in 'user[password]', with: user.password
+    fill_in 'user[password_confirmation]', with: user.password_confirmation
     click_on 'Sign up'
 
     expect(page).to have_content 'Email has already been taken'

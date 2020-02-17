@@ -1,20 +1,42 @@
-strong Title:
-|  #{question.title}
-p
-  strong Question:
-  |  #{question.body}
-p
-  strong from:
-  |  #{question.user.email}
-  | &nbsp;
-  - if current_user&.owner?(question)
-    span style='font-size: 8pt' =link_to 'Delete a question',
-            question_path(question),
-            method: :delete,
-            data: {confirm: 'Are you sure?'}
-p
-table
-  =render question.answers
+.row.bg-light.border.border-warning.rounded
+  .col-6
+    .question.pt-2.mb-1
+      strong Title:
+      |&nbsp;
+      span.question-title =question.title
+      br
+      strong Question:
+      |&nbsp;
+      span.question-body =question.body
+      span style='font-size: 8pt'
+      |&nbsp;
+      br
+      strong from:
+      |   #{question.user.email}
+      br
+      - if current_user&.owner?(question)
+        = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
+        | &nbsp;
+        span style='font-size: 8pt' =link_to 'Delete a question',
+                question_path(question),
+                method: :delete,
+                data: {confirm: 'Are you sure?'}, class: 'btn-sm btn-outline-danger mt-3'
+      .question-edit-errors.text-danger.pt-3
+  .col-6.pt-2
+    = form_with model: question, class: 'hidden pb-2', html: {id: "edit-question"} do |f|
+      = f.text_area :title, style: 'width: 100%'
+      br
+      = f.text_area :body, style: 'width: 100%'
+      br
+      = f.submit 'Save', class: 'btn btn-outline-info'
 br
-=render 'answers/form'
-
+-unless question.answers.empty?
+  strong Answers:
+.answer-edit-errors
+  = render 'shared/errors', resource: @answer
+.answers
+  = render question.answers
+br
+.answer-errors
+  = render 'shared/errors', resource: @answer
+= render 'answers/form'

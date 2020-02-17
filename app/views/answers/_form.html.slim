@@ -1,9 +1,10 @@
-= render 'shared/errors', resource: @answer
-= form_for :answer, url: question_answers_url(question),  local: true do |f|
-
+= form_with model: @answer, url: question_answers_path(question), class: 'new-answer' do |f|
   =f.label 'Your answer:'
   br
   =f.text_area :body, style: 'width: 60%'
-  p
-  =f.submit 'Add a answer'
-
+  br
+  - if current_user.nil?
+    =link_to 'Add a answer','', class: 'btn btn-primary disabled', :disabled => true
+    span.text-secondary.ml-5 You need to sign in or sign up before continuing.
+  -else
+    =f.submit 'Add a answer', class: 'btn btn-outline-primary'
