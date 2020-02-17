@@ -6,8 +6,6 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true, length: { minimum: 10 }
 
-  scope :by_worth, -> { where(best: true) }
-
   def up_to_best!
     Answer.transaction do
       question.answers.update_all(best: false)

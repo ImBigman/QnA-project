@@ -23,16 +23,6 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe '.by_worth scope' do
-    it 'includes answer with best: true' do
-      expect(Answer.by_worth).to eq [answer]
-    end
-
-    it 'excludes answer without best: false' do
-      expect(Answer.by_worth).not_to eq [answer1, answer2]
-    end
-  end
-
   describe 'up_to_best!' do
     before { answer1.up_to_best! }
 
@@ -50,6 +40,7 @@ RSpec.describe Answer, type: :model do
       [answer, answer2].each(&:reload)
 
       expect(Answer.default_scoped.to_sql).to eq Answer.all.order(best: :desc).order(:created_at).to_sql
+      expect(Answer.all).to eq([answer1, answer, answer2])
     end
   end
 end
