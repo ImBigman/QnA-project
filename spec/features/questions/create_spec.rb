@@ -16,14 +16,28 @@ feature 'User can create a questions', %q(
       click_on 'Ask question'
     end
 
-    scenario 'ask a question' do
-      fill_in 'Title', with: 'Title of question'
-      fill_in 'Body', with: 'Body of question'
-      click_on 'Save a question'
+    describe 'ask a' do
 
-      expect(page).to have_content 'Your question successfully created.'
-      expect(page).to have_content 'Title of question'
-      expect(page).to have_content 'Body of question'
+      background do
+        fill_in 'Title', with: 'Title of question'
+        fill_in 'Body', with: 'Body of question'
+      end
+
+      scenario 'question' do
+        click_on 'Save a question'
+
+        expect(page).to have_content 'Your question successfully created.'
+        expect(page).to have_content 'Title of question'
+        expect(page).to have_content 'Body of question'
+      end
+
+      scenario 'question with attached files' do
+        attach_file 'question[files][]', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb" ]
+        click_on 'Save a question'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
     end
 
     scenario 'ask a question with errors' do

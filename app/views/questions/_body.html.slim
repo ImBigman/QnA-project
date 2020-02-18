@@ -1,0 +1,26 @@
+strong Title:
+|&nbsp;
+span.question-title =question.title
+br
+strong Question:
+|&nbsp;
+span.question-body =question.body
+br
+strong from:
+|   #{question.user.email}
+br
+- if question.files.attached?
+  span.question-files style='font-size: 10pt'
+    - question.files.each do |file|
+      |attached file:
+      |&nbsp;
+      = link_to file.filename.to_s , url_for(file)
+      br
+- if current_user&.owner?(question)
+  = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
+  | &nbsp;
+  span style='font-size: 8pt' =link_to 'Delete a question',
+          question_path(question),
+          method: :delete,
+          data: {confirm: 'Are you sure?'}, class: 'btn-sm btn-outline-danger mt-3'
+.question-edit-errors.text-danger.pt-3

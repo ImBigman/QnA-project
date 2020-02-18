@@ -13,22 +13,41 @@
           = content_tag(:span, 'Best', class: 'btn-sm btn-success text-light mt-3 mr-2', remote: true, id: 'answer-usual', :disabled => true)
         -else
           = content_tag(:span, 'usual', class: 'btn-sm btn-light text-muted mt-3 mr-2 .disable', id: 'answer-usual', :disabled => true)
-      span class='answer_id_#{answer.id}_body'
-        = answer.body
-      - if current_user&.owner?(answer)
-        span style='font-size: 8pt'
-          |&nbsp;
-          = link_to 'Edit', '', class: 'btn-sm btn-outline-info mt-3 answer-edit', data: { answer_id: answer.id }
-        span style='font-size: 8pt'
-          |&nbsp;
-          =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
-      br
-      span.ml-5 style='font-size: 9pt'
-        |&nbsp; answer's author:
-          #{answer.user.email}
-      - if current_user&.owner?(answer)
-      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-        = f.text_area :body, style: 'width: 60%'
-        br
-        = f.submit 'Save', class: 'btn btn-outline-info'
-      br
+      span.list-answer
+        =render 'answers/answer_list', answer: answer
+        / span class='answer_id_#{answer.id}_body'
+        /   = answer.body
+        / - if current_user&.owner?(answer)
+        /   span style='font-size: 8pt'
+        /     |&nbsp;
+        /     = link_to 'Edit', '', class: 'btn-sm btn-outline-info mt-3 answer-edit', data: { answer_id: answer.id }
+        /   span style='font-size: 8pt'
+        /     |&nbsp;
+        /     =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
+        / br
+        / - if answer.files.attached?
+        /   span.ml-5 style='font-size: 9pt'
+        /     | &nbsp; attached files:
+        /     span.answer-files
+        /       =render 'answers/file', answer: answer
+        /   br
+        / span.ml-5 style='font-size: 9pt'
+        /   |&nbsp; answer's author:
+        /     #{answer.user.email}
+        / - if current_user&.owner?(answer)
+        / = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+        /   = f.text_area :body, style: 'width: 60%'
+        /   br
+        /   - if answer.files.attached?
+        /     span.answer-edit-files.ml-2 style='font-size: 9pt'
+        /       | &nbsp; files:
+        /       - answer.files.each do |file|
+        /         span  &nbsp;
+        /         |*
+        /         = link_to file.filename.to_s , url_for(file)
+        /         |&nbsp;
+        /         = link_to 'x', questions_path, class: 'text-danger'
+        /   br
+        /   = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 30%', class: 'btn-sm form-control-file mr-3 mb-2'
+        /   = f.submit 'Save', class: 'btn btn-outline-info btn-sm'
+        / br

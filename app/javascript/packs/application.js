@@ -11,6 +11,7 @@ require("jquery");
 require("../scripts/answer");
 require("../scripts/question");
 require("../scripts/best_answer");
+require("../scripts/direct_uploads");
 require("popper.js");
 
 
@@ -21,3 +22,7 @@ require("popper.js");
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 import 'bootstrap';
+
+document.addEventListener("turbolinks:load", () => {
+    $('[data-toggle="tooltip"]').tooltip()
+});

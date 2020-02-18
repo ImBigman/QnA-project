@@ -32,10 +32,10 @@ feature 'User can edit his question', %q(
       sign_in(user)
 
       visit question_path(question)
+      page.find('#question-edit').click
     end
 
     scenario 'edit a question', js: true do
-      page.find('#question-edit').click
       fill_in 'question[title]', with: 'edited question title'
       fill_in 'question[body]', with: 'edited question body'
       click_on 'Save'
@@ -43,6 +43,15 @@ feature 'User can edit his question', %q(
       expect(page).to_not have_content question.body
       expect(page).to have_content 'edited question title'
       expect(page).to_not have_selector 'text_area'
+    end
+
+    scenario 'can attach files', js: true do
+      within '#edit-question' do
+        attach_file 'question[files][]', ["#{Rails.root}/spec/support/feature_helpers.rb"]
+        click_on 'Save'
+      end
+
+      expect(page).to have_link 'feature_helpers.rb'
     end
   end
 end

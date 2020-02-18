@@ -1,8 +1,12 @@
 $('.answer-edit-errors').html('<%= render 'shared/errors', resource: @answer %>');
 
 <% if answer.errors.blank? %>
-    $('.answer_id_<%= answer.id %>_body').html('<%= j answer.body %>');
+
+    $('.answer_id_<%= answer.id %> .list-answer').html('<%= j render 'answers/answer_list', answer: answer %>');
     $('#edit-answer-<%= answer.id %>').hide()
     $('[data-answer-id="<%= answer.id %>"]').show()
 <% end %>
 
+
+//$('.answer_id_<= answer.id %>_body').html('<= j answer.body %>');
+//$('.answer_id_<= answer.id %> .answer-files').html('<= j render 'answers/file', answer: answer %>');

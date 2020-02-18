@@ -10,7 +10,7 @@ feature 'User can edit his answer', %q(
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Guest can not edit a answer', js: true do
+  scenario 'Guest can not edit the answer', js: true do
     visit question_path(question)
 
     expect(page).to have_content answer.body
@@ -33,7 +33,7 @@ feature 'User can edit his answer', %q(
       visit question_path(question)
     end
 
-    scenario 'edit a answer', js: true do
+    scenario 'can edit the answer', js: true do
       within '.answers' do
         click_on 'Edit'
         fill_in 'answer[body]', with: 'edited answer'
@@ -42,6 +42,16 @@ feature 'User can edit his answer', %q(
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
         expect(page).to_not have_selector 'text_area'
+      end
+    end
+
+    scenario 'can attach files', js: true do
+      within '.answers' do
+        click_on 'Edit'
+        attach_file 'answer[files][]', ["#{Rails.root}/spec/support/feature_helpers.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'feature_helpers.rb'
       end
     end
   end

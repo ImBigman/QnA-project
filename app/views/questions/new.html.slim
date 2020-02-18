@@ -1,1 +1,8 @@
-=render 'questions/form'
+= render 'shared/errors', resource: question
+
+= simple_form_for question, local: true do |f|
+  = f.input :title
+  = f.input :body
+  = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control-file border  bg-light border-light btn btn-default btn-file rounded mr-3 mb-2'
+  br
+  = f.submit 'Save a question', class: 'btn btn-outline-primary'
