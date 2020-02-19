@@ -103,30 +103,61 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+    describe 'As an author' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question, user: user), format: :js }
-        expect(assigns(:question)).to eq question
+      context 'with valid attributes' do
+        it 'assigns the requested question to @question' do
+          patch :update, params: { id: question, question: attributes_for(:question, user: user), format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'change questions attributes' do
+          patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for', user: user }, format: :js }
+          question.reload
+
+          expect(question.title).to eq 'new title for'
+          expect(question.body).to eq 'new body for'
+        end
       end
 
-      it 'change questions attributes' do
-        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for', user: user }, format: :js }
-        question.reload
+      context 'with invalid attributes' do
+        before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
+        it 'does not change question' do
+          question.reload
 
-        expect(question.title).to eq 'new title for'
-        expect(question.body).to eq 'new body for'
+          expect(question.title).to eq question.title
+          expect(question.body).to eq 'Its test question body'
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
-      it 'does not change question' do
+    context 'As not an author' do
+      before { login(user1) }
+
+      it 'does not change questions attributes' do
+        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for', user: user }, format: :js }
         question.reload
 
-        expect(question.title).to eq question.title
-        expect(question.body).to eq 'Its test question body'
+        expect(question.title).to_not eq 'new title for'
+        expect(question.body).to_not eq 'new body for'
+      end
+    end
+
+    context 'As guest' do
+      it 'does not change questions attributes' do
+        patch :update, params: { id: question, question: { title: 'new title for', body: 'new body for', user: user }, format: :js }
+        question.reload
+
+        expect(question.title).to_not eq 'new title for'
+        expect(question.body).to_not eq 'new body for'
+      end
+
+      it 'redirected to sign in page' do
+        patch :update, params: { id: question, question: attributes_for(:question, user: user) }
+
+        expect(response.status).to eq 302
+        expect(response).to redirect_to '/users/sign_in'
       end
     end
   end
@@ -151,7 +182,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       let!(:question) { create(:question, user: user) }
 
-      it 'does not delete the answer' do
+      it 'does not delete the question' do
         expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
       end
 

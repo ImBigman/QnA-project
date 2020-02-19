@@ -8,7 +8,7 @@ feature 'User can edit his answer', %q(
   given(:user) { create(:user) }
   given(:user1) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:answer) { create(:answer, :with_files, question: question, user: user) }
 
   scenario 'Guest can not edit the answer', js: true do
     visit question_path(question)
@@ -31,11 +31,14 @@ feature 'User can edit his answer', %q(
       sign_in(user)
 
       visit question_path(question)
+
+      within '.answers' do
+        click_on 'Edit'
+      end
     end
 
     scenario 'can edit the answer', js: true do
       within '.answers' do
-        click_on 'Edit'
         fill_in 'answer[body]', with: 'edited answer'
         click_on 'Save'
 
@@ -47,13 +50,21 @@ feature 'User can edit his answer', %q(
 
     scenario 'can attach files', js: true do
       within '.answers' do
-        click_on 'Edit'
         attach_file 'answer[files][]', ["#{Rails.root}/spec/support/feature_helpers.rb"]
         click_on 'Save'
 
         expect(page).to have_link 'feature_helpers.rb'
       end
     end
+
+    scenario 'can delete any attached files', js: true do
+      within '.answers' do
+        page.find(".attached-file-#{answer.files.first.id} #delete-attached-file").click
+        click_on 'Save'
+
+        expect(page).to_not have_link 'feature_helpers.rb'
+        expect(page).to have_link 'controller_helpers.rb'
+      end
+    end
   end
 end
-
