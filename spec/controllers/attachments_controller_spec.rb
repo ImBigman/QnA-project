@@ -12,6 +12,12 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'delete the file' do
         expect { delete :destroy, params: { id: question.files.first.id, format: :js } }.to change(question.files, :count).by(-1)
       end
+
+      it 'render destroy view' do
+        delete :destroy, params: { id: question.files.first.id, format: :js }
+        expect(response).to render_template :destroy
+        expect(response).to have_http_status :ok
+      end
     end
 
     context 'As not an author' do

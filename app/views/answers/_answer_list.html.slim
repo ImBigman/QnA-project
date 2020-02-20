@@ -9,10 +9,7 @@ span class='answer_id_#{answer.id}_body'
       =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
   br
   - if answer.files.attached?
-    span.ml-5 style='font-size: 9pt'
-      | &nbsp; attached files:
-      span.answer-files
-        =render 'answers/file', answer: answer
+    =render 'answers/file', resource: answer
     br
   span.ml-5 style='font-size: 9pt'
     |&nbsp; answer's author:
