@@ -9,19 +9,19 @@ span class='answer_id_#{answer.id}_body'
       =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
   br
   - if answer.files.attached?
-    =render 'answers/file', resource: answer
+    =render 'attachments/attachment', resource: answer
     br
-  span.ml-5 style='font-size: 9pt'
+  span style='font-size: 9pt'
     |&nbsp; answer's author:
             #{answer.user.email}
   - if current_user&.owner?(answer)
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+  = form_with model: answer, class: 'hidden ml-1', html: { id: "edit-answer-#{answer.id}" } do |f|
     = f.text_area :body, style: 'width: 60%'
     - if answer.files.attached?
       br
       span style='font-size: 9pt'
         |files:
-        =render 'attachments/attachment', resource: answer
+        =render 'attachments/attachment_edit', resource: answer
     br
     = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 30%', class: 'btn-sm form-control-file mr-3 mb-2'
     = f.submit 'Save', class: 'btn btn-outline-info btn-sm'

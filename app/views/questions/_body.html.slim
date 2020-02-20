@@ -10,12 +10,9 @@ strong from:
 |   #{question.user.email}
 br
 - if question.files.attached?
-  span.question-files style='font-size: 10pt'
-    - question.files.each do |file|
-      |attached file:
-      |&nbsp;
-      = link_to file.filename.to_s , url_for(file)
-      br
+  span.question-files
+    =render 'attachments/attachment', resource: question
+  br
 - if current_user&.owner?(question)
   = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
   | &nbsp;

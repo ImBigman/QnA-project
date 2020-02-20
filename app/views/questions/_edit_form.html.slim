@@ -6,7 +6,7 @@
   span.attachments style='font-size: 10pt'
     - if question.files.attached?
       |files:
-      =render 'attachments/attachment', resource: question
+      =render 'attachments/attachment_edit', resource: question
     br
   = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 50%', class: 'd-inline btn-sm form-control-file mr-3 mb-2'
   = f.submit 'Save', class: 'd-inline btn btn-outline-info btn-sm float-right'
