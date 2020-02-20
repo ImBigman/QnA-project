@@ -3,15 +3,10 @@
   br
   = f.text_area :body, style: 'width: 100%'
   br
-  span.attachments
+  span.attachments style='font-size: 10pt'
     - if question.files.attached?
-      - question.files.each do |file|
-        span class="attached-file-#{file.id}" style='font-size: 10pt'
-          |file:
-          |&nbsp;
-          = link_to file.filename.to_s , url_for(file)
-          |&nbsp;
-          = link_to  'delete', attachment_path(file), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-file'
-        br
+      |files:
+      =render 'attachments/attachment', resource: question
+    br
   = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 50%', class: 'd-inline btn-sm form-control-file mr-3 mb-2'
   = f.submit 'Save', class: 'd-inline btn btn-outline-info btn-sm float-right'

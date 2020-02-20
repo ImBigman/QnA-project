@@ -7,5 +7,5 @@
     =link_to 'Add a answer','', class: 'd-inline btn btn-primary disabled', :disabled => true
     span.text-secondary.ml-5.d-inline You need to sign in or sign up before continuing.
   -else
-    = f.file_field :files, multiple: true, class: 'btn-sm form-control-file mr-3 mb-2', style: 'width: 60%'
+    = f.file_field :files, multiple: true, direct_upload: true, class: 'btn-sm form-control-file mr-3 mb-2', style: 'width: 60%'
     =f.submit 'Add a answer', class: 'btn btn-outline-primary'

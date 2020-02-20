@@ -1,0 +1,6 @@
+- resource.files.each do |file|
+  span class="attached-file-#{file.id}"
+    br
+    = link_to file.filename.to_s , url_for(file)
+    |&nbsp;
+    = link_to  'delete', attachment_path(file), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-file'

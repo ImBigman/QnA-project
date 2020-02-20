@@ -20,12 +20,22 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'does not delete the file' do
         expect { delete :destroy, params: { id: question.files.first.id, format: :js } }.not_to change(question.files, :count)
       end
+
+      it 'get flash alert message' do
+        delete :destroy, params: { id: question.files.first.id, format: :js }
+        expect(flash[:alert]).to eq 'Not enough permission: for delete'
+      end
     end
 
     context 'As guest' do
 
       it 'does not delete the file' do
         expect { delete :destroy, params: { id: question.files.first.id, format: :js } }.not_to change(question.files, :count)
+      end
+
+      it 'responds with 401' do
+        delete :destroy, params: { id: question.files.first.id, format: :js }
+        expect(response).to have_http_status :unauthorized
       end
 
       it 'redirected to sign in page' do

@@ -1,8 +1,12 @@
 class AttachmentsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index]
+  before_action :authenticate_user!
 
   def destroy
-    attachment.purge_later if current_user.owner?(attachment.record)
+    if current_user.owner?(attachment.record)
+      attachment.purge_later
+    else
+      flash[:alert] = 'Not enough permission: for delete'
+    end
   end
 
   private

@@ -22,15 +22,9 @@ span class='answer_id_#{answer.id}_body'
     = f.text_area :body, style: 'width: 60%'
     - if answer.files.attached?
       br
-      span.ml-2 style='font-size: 9pt'
-        | &nbsp; files:
-        - answer.files.each do |file|
-          span class="attached-file-#{file.id}"
-            |&nbsp;
-            = link_to file.filename.to_s , url_for(file)
-            |&nbsp;
-            = link_to 'delete', attachment_path(file), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-file'
-            |&nbsp;
+      span style='font-size: 9pt'
+        |files:
+        =render 'attachments/attachment', resource: answer
     br
     = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 30%', class: 'btn-sm form-control-file mr-3 mb-2'
     = f.submit 'Save', class: 'btn btn-outline-info btn-sm'
