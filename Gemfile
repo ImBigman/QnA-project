@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'bootstrap', '~> 4.4.1'
 gem 'devise'
 gem 'jquery-rails'
+gem 'octicons', '~> 9.4'
+gem 'octicons_helper'
 gem 'popper_js', '~> 1.16'
 gem 'slim-rails'
 gem 'simple_form'
