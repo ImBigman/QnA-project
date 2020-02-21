@@ -1,9 +1,8 @@
 $('.question-edit-errors').html('<%= render 'shared/errors', resource: @question %>');
 
 <% if question.errors.blank? %>
-  $('.question-title').html('<%= j question.title %>');
-  $('.question-body').html('<%= j question.body %>');
+  $('.question').html('<%= j render 'questions/body' %>');
+  $('.question-edit-form').html('<%= j render 'questions/edit_form' %>');
   $('#edit-question').hide()
   $('#question-edit').show()
 <% end %>
-

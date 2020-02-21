@@ -11,11 +11,11 @@ RSpec.describe User, type: :model do
   let(:user1) { create(:user) }
   let(:question) { create(:question, user: user) }
 
-  it 'owns question' do
+  it 'owns resource' do
     expect(user).to be_owner(question)
   end
 
-  it 'Other user is not the owner of the question' do
+  it 'Other user is not the owner of the resource' do
     expect(user1).not_to be_owner(question)
   end
 end

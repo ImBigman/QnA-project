@@ -26,6 +26,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
+gem "aws-sdk-s3", require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'bootstrap', '~> 4.4.1'
 gem 'devise'
@@ -33,6 +34,7 @@ gem 'jquery-rails'
 gem 'popper_js', '~> 1.16'
 gem 'slim-rails'
 gem 'simple_form'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

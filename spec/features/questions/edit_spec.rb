@@ -7,7 +7,7 @@ feature 'User can edit his question', %q(
 ) do
   given(:user) { create(:user) }
   given(:user1) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given(:question) { create(:question, :with_files, user: user) }
 
   scenario 'Guest can not edit a question', js: true do
     visit question_path(question)
@@ -25,6 +25,7 @@ feature 'User can edit his question', %q(
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     expect(page).to_not have_css('#question-edit')
+    expect(page).to have_link 'feature_helpers.rb'
   end
 
   describe 'Authenticated user' do
@@ -32,10 +33,10 @@ feature 'User can edit his question', %q(
       sign_in(user)
 
       visit question_path(question)
+      page.find('#question-edit').click
     end
 
     scenario 'edit a question', js: true do
-      page.find('#question-edit').click
       fill_in 'question[title]', with: 'edited question title'
       fill_in 'question[body]', with: 'edited question body'
       click_on 'Save'
@@ -43,6 +44,27 @@ feature 'User can edit his question', %q(
       expect(page).to_not have_content question.body
       expect(page).to have_content 'edited question title'
       expect(page).to_not have_selector 'text_area'
+    end
+
+    scenario 'can attach files', js: true do
+      within '#edit-question' do
+        attach_file 'question[files][]', ["#{Rails.root}/spec/support/feature_helpers.rb"]
+        click_on 'Save'
+      end
+
+      expect(page).to have_link 'feature_helpers.rb'
+    end
+
+    scenario 'can delete any attached files', js: true do
+      within '#edit-question' do
+        page.find(".attached-file-#{question.files.first.id} #delete-attached-file").click
+        click_on 'Save'
+      end
+
+      within '.question-files' do
+        expect(page).to_not have_link 'feature_helpers.rb'
+        expect(page).to have_link 'controller_helpers.rb'
+      end
     end
   end
 end

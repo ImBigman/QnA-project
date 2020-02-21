@@ -12,7 +12,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    answer.update(answer_params)
+    answer.update(answer_params) if current_user.owner?(answer)
   end
 
   def destroy
@@ -38,6 +38,6 @@ class AnswersController < ApplicationController
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:body, :author_id)
+    params.require(:answer).permit(:body, :author_id, files: [])
   end
 end
