@@ -31,6 +31,11 @@ RSpec.describe AttachmentsController, type: :controller do
         delete :destroy, params: { id: question.files.first.id, format: :js }
         expect(flash[:alert]).to eq 'Not enough permission: for delete'
       end
+
+      it 'render destroy view' do
+        delete :destroy, params: { id: question.files.first.id, format: :js }
+        expect(response).to render_template :destroy
+      end
     end
 
     context 'As guest' do

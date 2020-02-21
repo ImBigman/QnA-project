@@ -119,6 +119,11 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.title).to eq 'new title for'
           expect(question.body).to eq 'new body for'
         end
+
+        it 'renders edit view' do
+          patch :update, params: { id: question, question: attributes_for(:question, user: user), format: :js }
+          expect(response).to render_template :update
+        end
       end
 
       context 'with invalid attributes' do
@@ -128,6 +133,10 @@ RSpec.describe QuestionsController, type: :controller do
 
           expect(question.title).to eq question.title
           expect(question.body).to eq 'Its test question body'
+        end
+
+        it 'renders edit view' do
+          expect(response).to render_template :update
         end
       end
     end
@@ -141,6 +150,11 @@ RSpec.describe QuestionsController, type: :controller do
 
         expect(question.title).to_not eq 'new title for'
         expect(question.body).to_not eq 'new body for'
+      end
+
+      it 'renders edit view' do
+        patch :update, params: { id: question, question: attributes_for(:question, user: user), format: :js }
+        expect(response).to render_template :update
       end
     end
 

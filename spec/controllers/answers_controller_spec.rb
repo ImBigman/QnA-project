@@ -18,6 +18,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'becomes an author of the answer' do
           post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
+
           expect(assigns(:answer).user).to eq user
         end
       end
@@ -113,6 +114,12 @@ RSpec.describe AnswersController, type: :controller do
       it 'delete a answer' do
         expect { delete :destroy, params: { id: answer, format: :js } }.to change(question.answers, :count).by(-1)
       end
+
+      it 'render destroy view' do
+        delete :destroy, params: { id: answer, format: :js }
+
+        expect(response).to render_template :destroy
+      end
     end
 
     context 'As not an author' do
@@ -122,6 +129,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'does not delete the answer' do
         expect { delete :destroy, params: { id: answer, format: :js } }.not_to change(question.answers, :count)
+      end
+
+      it 'render destroy view' do
+        delete :destroy, params: { id: answer, format: :js }
+
+        expect(response).to render_template :destroy
       end
     end
 
