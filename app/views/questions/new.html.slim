@@ -1,8 +1,12 @@
-= render 'shared/errors', resource: question
+.question-errors.text-danger
+  = render 'shared/errors', resource: question
 
 = simple_form_for question, local: true do |f|
-  = f.input :title
-  = f.input :body
-  = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control-file border  bg-light border-light btn btn-default btn-file rounded mr-3 mb-2'
+  = f.input :title, input_html: { class: "col-md-8"}
+  = f.input :body, input_html: { class: "col-md-8"}
+  = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control-file btn-sm btn-default btn-file mr-3 mb-2'
+
+  = f.simple_fields_for :links do |links|
+    =render 'questions/link', f: links
   br
   = f.submit 'Save a question', class: 'btn btn-outline-primary'

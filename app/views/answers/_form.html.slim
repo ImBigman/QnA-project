@@ -1,11 +1,10 @@
-= form_with model: @answer, url: question_answers_path(question), class: 'new-answer' do |f|
-  =f.label 'Your answer:'
-  br
-  =f.text_area :body, style: 'width: 60%'
-  br
+= simple_form_for @answer, url: question_answers_path(question), remote: true do |f|
+  = f.input :body, label: 'Your answer:', input_html: { class: "col-md-8"}
   - if current_user.nil?
     =link_to 'Add a answer','', class: 'd-inline btn btn-primary disabled', :disabled => true
     span.text-secondary.ml-5.d-inline You need to sign in or sign up before continuing.
   -else
     = f.file_field :files, multiple: true, direct_upload: true, class: 'btn-sm form-control-file mr-3 mb-2', style: 'width: 60%'
+    = f.simple_fields_for :links do |links|
+      = render 'questions/link', f: links
     =f.submit 'Add a answer', class: 'btn btn-outline-primary'

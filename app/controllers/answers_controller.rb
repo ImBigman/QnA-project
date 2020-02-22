@@ -38,6 +38,8 @@ class AnswersController < ApplicationController
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:body, :author_id, files: [])
+    params.require(:answer).permit(:body, :author_id,
+                                   files: [],
+                                   links_attributes: %i[name url])
   end
 end

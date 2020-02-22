@@ -7,12 +7,16 @@ strong Question:
 span.question-body =question.body
 br
 strong from:
-|   #{question.user.email}
-br
+|&nbsp;
+span =question.user.email
+- if question.links.exists?
+  br
+  =render 'questions/link_list', resource: question
 - if question.files.attached?
+  br
   span.question-files
     =render 'attachments/attachment', resource: question
-  br
+br
 - if current_user&.owner?(question)
   = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
   | &nbsp;
@@ -21,3 +25,4 @@ br
           method: :delete,
           data: {confirm: 'Are you sure?'}, class: 'btn-sm btn-outline-danger mt-3'
 .question-edit-errors.text-danger.pt-3
+
