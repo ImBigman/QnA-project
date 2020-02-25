@@ -7,9 +7,10 @@ feature 'User can edit his question', %q(
 ) do
   given(:user) { create(:user) }
   given(:user1) { create(:user) }
-  given(:question) { create(:question, :with_files, user: user) }
+  given(:question) { create(:question, :with_files, :with_links, user: user) }
+  given(:link) { create(:link, name: 'Third', url: 'https://yandex.ru', linkable: question) }
 
-  scenario 'Guest can not edit a question', js: true do
+  scenario 'Guest can not edit a question' do
     visit question_path(question)
 
     expect(page).to have_content question.title
@@ -54,7 +55,6 @@ feature 'User can edit his question', %q(
 
       expect(page).to have_link 'feature_helpers.rb'
     end
-
     scenario 'can delete any attached files', js: true do
       within '#edit-question' do
         page.find(".attached-file-#{question.files.first.id} #delete-attached-file").click
@@ -64,6 +64,32 @@ feature 'User can edit his question', %q(
       within '.question-files' do
         expect(page).to_not have_link 'feature_helpers.rb'
         expect(page).to have_link 'controller_helpers.rb'
+      end
+    end
+
+    scenario 'can add link', js: true do
+      within '.question-edit-form' do
+        expect(page).to have_field('Link name', with: question.links.first.name)
+        expect(page).to have_field('Url', with: question.links.first.url)
+        all('.question_links_name input').last.set(link.name)
+        all('.question_links_url input').last.set(link.url)
+
+        click_on 'Save'
+      end
+
+      expect(page).to have_link  link.name, href: link.url
+      expect(page).to have_link  question.links.first.name, href: question.links.first.url
+      expect(page).to have_link  question.links.last.name, href: question.links.last.url
+    end
+
+    scenario 'can delete any link', js: true do
+      within '.question-edit-form' do
+        all('.octicon-dash').first.click
+        click_on 'Save'
+      end
+
+      within '.question' do
+        expect(page).to_not have_link question.links.first.name, href: question.links.first.url
       end
     end
   end

@@ -6,5 +6,8 @@
   -else
     = f.file_field :files, multiple: true, direct_upload: true, class: 'btn-sm form-control-file mr-3 mb-2', style: 'width: 60%'
     = f.simple_fields_for :links do |links|
-      = render 'questions/link', f: links
+      = render 'links/fields', f: links
+    .links
+      = link_to_add_association octicon('plus-small', height: 32), f, :links, partial: 'links/fields'
+      br
     =f.submit 'Add a answer', class: 'btn btn-outline-primary'

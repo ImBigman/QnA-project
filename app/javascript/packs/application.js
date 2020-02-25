@@ -13,9 +13,6 @@ require("../scripts/question");
 require("../scripts/best_answer");
 require("../scripts/direct_uploads");
 require("popper.js");
-require("cocoon");
-
-
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -23,8 +20,10 @@ require("cocoon");
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+import 'cocoon-js';
 import 'bootstrap';
 
 document.addEventListener("turbolinks:load", () => {
     $('[data-toggle="tooltip"]').tooltip()
 });
+

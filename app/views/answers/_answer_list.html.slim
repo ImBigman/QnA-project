@@ -7,26 +7,32 @@ span class='answer_id_#{answer.id}_body'
     span style='font-size: 8pt'
       |&nbsp;
       =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
+    br
+    span style='font-size: 9pt'
+      |&nbsp; answer's author:
+            #{answer.user.email}
   - if answer.files.attached?
     br
     =render 'attachments/attachment', resource: answer
   - if answer.links.exists?
     span style='font-size: 9pt'
       br
-      = render 'questions/link_list', resource: answer
-  br
-  span style='font-size: 9pt'
-    |&nbsp; answer's author:
-          #{answer.user.email}
+      = render 'links/link_list', resource: answer
   - if current_user&.owner?(answer)
-  = form_with model: answer, class: 'hidden ml-1', html: { id: "edit-answer-#{answer.id}" } do |f|
-    = f.text_area :body, style: 'width: 60%'
-    - if answer.files.attached?
-      br
-      span style='font-size: 9pt'
-        |files:
-        =render 'attachments/attachment_edit', resource: answer
-    br
-    = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 30%', class: 'btn-sm form-control-file mr-3 mb-2'
-    = f.submit 'Save', class: 'btn btn-outline-info btn-sm'
+    span class ="edit-answer-#{answer.id} hidden"
+      = simple_form_for answer, class: 'hidden ml-1',  remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+        = f.text_area :body, style: 'width: 60%'
+        span.attached-links-form
+          = f.simple_fields_for :links do |links|
+            = render 'links/fields', f: links
+            .links
+            = link_to_add_association octicon('plus-small', height: 32), f, :links, partial: 'links/fields'
+        - if answer.files.attached?
+          br
+          span style='font-size: 9pt'
+            |files:
+            =render 'attachments/attachment_edit', resource: answer
+          br
+        = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 30%', class: 'btn-sm form-control-file mr-3 mb-2'
+        = f.submit 'Save', class: 'btn btn-outline-info btn-sm'
   br

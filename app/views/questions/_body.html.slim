@@ -11,7 +11,8 @@ strong from:
 span =question.user.email
 - if question.links.exists?
   br
-  =render 'questions/link_list', resource: question
+  span.link style='font-size: 9pt'
+    =render 'links/link_list', resource: question
 - if question.files.attached?
   br
   span.question-files

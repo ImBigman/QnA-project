@@ -34,6 +34,7 @@ gem 'devise'
 gem 'jquery-rails'
 gem 'octicons', '~> 9.4'
 gem 'octicons_helper'
+gem "octokit", "~> 4.0"
 gem 'popper_js', '~> 1.16'
 gem 'slim-rails'
 gem 'simple_form'

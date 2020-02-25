@@ -1,7 +1,11 @@
-= form_with model: question, class: 'hidden pb-2', html: {id: "edit-question"} do |f|
-  = f.text_area :title, style: 'width: 100%'
-  br
-  = f.text_area :body, style: 'width: 100%'
+= simple_form_for question, html: {id: "edit-question"}, remote: true do |f|
+  = f.input :title, input_html: {class: "col-md-12"}
+  = f.input :body, input_html: {class: "col-md-12"}
+  span.attached-links-form
+    = f.simple_fields_for :links do |links|
+      = render 'links/fields', f: links
+      .links
+      = link_to_add_association octicon('plus-small', height: 32), f, :links, partial: 'links/fields'
   br
   span.attachments style='font-size: 10pt'
     - if question.files.attached?

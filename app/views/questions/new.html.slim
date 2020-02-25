@@ -7,6 +7,8 @@
   = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control-file btn-sm btn-default btn-file mr-3 mb-2'
 
   = f.simple_fields_for :links do |links|
-    =render 'questions/link', f: links
+    = render 'links/fields', f: links
+  .links
+    = link_to_add_association octicon('plus-small', height: 32), f, :links,  partial: 'links/fields'
   br
   = f.submit 'Save a question', class: 'btn btn-outline-primary'
