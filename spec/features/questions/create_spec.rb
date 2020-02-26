@@ -41,10 +41,11 @@ feature 'User can create a questions', %q(
 
       scenario 'question with reward' do
         fill_in 'Reward title', with: 'For the best answer'
-        attach_file 'reward[file][]', 'app/assets/images/cup-icon.png'
+        attach_file 'question[reward_attributes][image]', 'app/assets/images/cup-icon.png'
         click_on 'Save a question'
 
-        expect(page).to have_link 'cup-icon.png'
+        expect(page).to have_css('.question-reward')
+        expect(page.find('.reward-image')['src']).to have_content 'cup-icon.png'
       end
     end
 

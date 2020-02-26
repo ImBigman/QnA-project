@@ -13,8 +13,9 @@ RSpec.describe Answer, type: :model do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let!(:answer) { create(:answer, user: user, question: question, best: true) }
-  let!(:answer1) { create(:answer, user: user, question: question) }
-  let!(:answer2) { create(:answer, user: user, question: question) }
+  let!(:answer1) { create(:answer, user: user, question: question,  best: false) }
+  let!(:answer2) { create(:answer, user: user, question: question,  best: false) }
+  let!(:reward) { create :reward, question: question }
 
   describe '#best?' do
     it 'is the best?' do
@@ -37,6 +38,14 @@ RSpec.describe Answer, type: :model do
       answer.reload
 
       expect(answer).not_to be_best
+    end
+
+    it 'reward the best answer author' do
+      answer1.reload
+      reward.reload
+
+      expect(answer1).to be_best
+      expect(reward.user).to eq user
     end
 
     it 'should make the right order' do

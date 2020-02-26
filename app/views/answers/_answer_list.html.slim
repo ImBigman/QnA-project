@@ -7,10 +7,10 @@ span class='answer_id_#{answer.id}_body'
     span style='font-size: 8pt'
       |&nbsp;
       =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
+  span style='font-size: 9pt'
     br
-    span style='font-size: 9pt'
-      |&nbsp; answer's author:
-            #{answer.user.email}
+    |&nbsp; answer's author:
+          #{answer.user.email}
   - if answer.files.attached?
     br
     =render 'attachments/attachment', resource: answer

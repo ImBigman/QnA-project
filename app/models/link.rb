@@ -9,8 +9,6 @@ class Link < ApplicationRecord
                       on: :create,
                       message: 'please enter URL in correct format'
 
-  # attr_reader :linkable_type, :linkable_id
-
   def gist?
     url.include? 'https://gist.github.com/'
   end

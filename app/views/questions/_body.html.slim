@@ -1,13 +1,10 @@
-strong Title:
-|&nbsp;
+strong Title:&nbsp;
 span.question-title =question.title
 br
-strong Question:
-|&nbsp;
+strong Question:&nbsp;
 span.question-body =question.body
 br
-strong from:
-|&nbsp;
+strong from:&nbsp;
 span =question.user.email
 - if question.links.exists?
   br
@@ -19,6 +16,11 @@ span =question.user.email
     =render 'attachments/attachment', resource: question
 br
 - if current_user&.owner?(question)
+  -if question.reward.present?
+    span.question-reward
+      strong question reward:&nbsp;
+      =image_tag question.reward.image, size: "32x32", alt: "Reward", class: 'reward-image'
+    br
   = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
   | &nbsp;
   span style='font-size: 8pt' =link_to 'Delete a question',
