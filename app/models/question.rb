@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  include LinksConcern
+  include Linkable
 
   has_many :answers, dependent: :destroy
   has_one :reward, dependent: :destroy

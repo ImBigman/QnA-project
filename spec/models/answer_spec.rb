@@ -1,5 +1,4 @@
 require 'rails_helper'
-require Rails.root.join 'spec/concerns/links_concern_spec.rb'
 
 RSpec.describe Answer, type: :model do
   it { should belong_to(:question) }
@@ -15,7 +14,7 @@ RSpec.describe Answer, type: :model do
   let!(:answer2) { create(:answer, user: user, question: question,  best: false) }
   let!(:reward) { create :reward, question: question }
 
-  it_behaves_like 'links_concern'
+  it_behaves_like 'linkable'
 
   describe '#best?' do
     it 'is the best?' do

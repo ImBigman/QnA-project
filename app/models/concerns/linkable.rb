@@ -1,4 +1,4 @@
-module LinksConcern
+module Linkable
   extend ActiveSupport::Concern
 
   included do

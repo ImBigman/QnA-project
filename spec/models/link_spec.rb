@@ -19,10 +19,6 @@ RSpec.describe Link, type: :model do
     expect(link1).to_not be_gist
   end
 
-  it '.gist_javascript_tag' do
-    expect(link.gist_javascript_tag).to eq('<script src=' + link.url + '.js></script>')
-  end
-
   it 'must be in the right order' do
     [link, link1].each(&:reload)
 

@@ -1,5 +1,5 @@
 class Answer < ApplicationRecord
-  include LinksConcern
+  include Linkable
 
   default_scope { order(best: :desc).order(:created_at) }
 

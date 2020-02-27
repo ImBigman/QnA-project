@@ -12,8 +12,4 @@ class Link < ApplicationRecord
   def gist?
     url.include? 'https://gist.github.com/'
   end
-
-  def gist_javascript_tag
-    '<script src=' + url + '.js></script>'
-  end
 end
