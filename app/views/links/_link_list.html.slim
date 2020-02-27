@@ -6,7 +6,7 @@
       - if current_user&.owner?(resource)
         = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'
       br
-      = render inline: link.render_gist
+      = render inline: link.gist_javascript_tag
     - else
       |links:
       br

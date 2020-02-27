@@ -8,9 +8,11 @@ feature 'The user can view a list of all his rewards.', %q(
   given!(:users) { create_list(:user, 2) }
   given!(:questions) { create_list(:question, 2, user: users.first) }
   given!(:answer) { create(:answer, question: questions.first, user: users.first, best: true) }
-  given!(:answer1) { create(:answer, question: questions.last, user: users.last, best: true) }
+  given!(:answer1) { create(:answer, question: questions.last, user: users.first, best: true) }
   given!(:reward) { create :reward, :with_image, question: questions.first, user: users.first }
   given!(:reward1) { create :reward, :with_image, question: questions.last, user: users.first }
+  given!(:reward2) { create :reward, :with_image, question: questions.last, user: users.last }
+  given!(:reward3) { create :reward, :with_image, question: questions.last }
 
   scenario 'Authenticated user' do
     sign_in(users.first)
@@ -18,6 +20,8 @@ feature 'The user can view a list of all his rewards.', %q(
 
     expect(page).to have_content reward.name
     expect(page).to have_content reward1.name
+    expect(page).to_not have_content reward2.name
+    expect(page).to_not have_content reward3.name
   end
 
   describe 'Unauthenticated user 'do

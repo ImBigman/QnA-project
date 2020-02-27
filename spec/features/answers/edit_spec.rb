@@ -91,6 +91,7 @@ feature 'User can edit his answer', %q(
 
       within '.answers' do
         expect(page).to_not have_link answer.links.first.name, href: answer.links.first.url
+        expect(page).to have_link answer.links.last.name, href: answer.links.last.url
       end
     end
   end

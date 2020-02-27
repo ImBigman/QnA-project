@@ -1,14 +1,12 @@
 require 'rails_helper'
+require Rails.root.join 'spec/concerns/links_concern_spec.rb'
 
 RSpec.describe Answer, type: :model do
   it { should belong_to(:question) }
   it { should belong_to(:user) }
-  it { should have_many(:links).dependent(:destroy) }
 
   it { should validate_presence_of :body }
   it { should validate_length_of(:body).is_at_least(10) }
-
-  it { should accept_nested_attributes_for :links }
 
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
@@ -16,6 +14,8 @@ RSpec.describe Answer, type: :model do
   let!(:answer1) { create(:answer, user: user, question: question,  best: false) }
   let!(:answer2) { create(:answer, user: user, question: question,  best: false) }
   let!(:reward) { create :reward, question: question }
+
+  it_behaves_like 'links_concern'
 
   describe '#best?' do
     it 'is the best?' do

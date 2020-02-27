@@ -13,7 +13,7 @@ class Link < ApplicationRecord
     url.include? 'https://gist.github.com/'
   end
 
-  def render_gist
+  def gist_javascript_tag
     '<script src=' + url + '.js></script>'
   end
 end

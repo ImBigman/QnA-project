@@ -90,6 +90,7 @@ feature 'User can edit his question', %q(
 
       within '.question' do
         expect(page).to_not have_link question.links.first.name, href: question.links.first.url
+        expect(page).to have_link question.links.last.name, href: question.links.last.url
       end
     end
   end

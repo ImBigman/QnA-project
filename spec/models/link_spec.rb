@@ -14,12 +14,13 @@ RSpec.describe Link, type: :model do
   let(:link) { create(:link, name: 'First', url: 'https://gist.github.com/ImBigman/8ca778b06a47e698bdbbb0b149f8dbdf', linkable: question) }
   let(:link1) { create(:link, name: 'Second', url: 'https://google.ru', linkable: question) }
 
-  it 'is gist?' do
+  it '#gist?' do
     expect(link).to be_gist
+    expect(link1).to_not be_gist
   end
 
-  it 'prepared for gist render' do
-    expect(link.render_gist).to eq('<script src=' + link.url + '.js></script>')
+  it '.gist_javascript_tag' do
+    expect(link.gist_javascript_tag).to eq('<script src=' + link.url + '.js></script>')
   end
 
   it 'must be in the right order' do
