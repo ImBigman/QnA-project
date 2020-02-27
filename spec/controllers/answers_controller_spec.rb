@@ -5,6 +5,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:user1) { create(:user) }
   let(:question) { create :question, user: user }
   let(:answer) { create :answer, question: question, user: user, best: false }
+  let!(:reward) { create :reward, question: question }
 
   describe 'POST #create' do
     context 'As user' do
@@ -165,6 +166,15 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer).to be_best
       end
 
+      it 'reward the best answer author' do
+        patch :make_better, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+        answer.reload
+        reward.reload
+
+        expect(answer).to be_best
+        expect(reward.user).to eq answer.user
+      end
+
       it 'render make_better view' do
         patch :make_better, params: { id: answer, answer: attributes_for(:answer) }, format: :js
 
@@ -175,7 +185,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'As not an author' do
       before { login(user1) }
 
-      it 'does not change answer' do
+      it 'does not make best answer' do
         patch :make_better, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js
         answer.reload
 

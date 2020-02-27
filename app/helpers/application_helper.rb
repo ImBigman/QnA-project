@@ -6,4 +6,8 @@ module ApplicationHelper
       render inline: "<%= content_tag :div, flash[:notice], class: 'alert alert-success', role:'alert'%><br>"
     end
   end
+
+  def javascript_link_tag(link)
+    render inline: '<script src=' + link.url + '.js></script>'
+  end
 end

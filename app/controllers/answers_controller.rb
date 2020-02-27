@@ -20,7 +20,6 @@ class AnswersController < ApplicationController
   end
 
   def make_better
-    @question = answer.question
     answer.up_to_best! if current_user.owner?(answer.question)
   end
 
@@ -38,6 +37,8 @@ class AnswersController < ApplicationController
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:body, :author_id, files: [])
+    params.require(:answer).permit(:body, :author_id,
+                                   files: [],
+                                   links_attributes: %i[id name url _destroy])
   end
 end

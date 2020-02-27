@@ -38,6 +38,15 @@ feature 'User can create a questions', %q(
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
+
+      scenario 'question with reward' do
+        fill_in 'Reward title', with: 'For the best answer'
+        attach_file 'question[reward_attributes][image]', 'app/assets/images/cup-icon.png'
+        click_on 'Save a question'
+
+        expect(page).to have_css('.question-reward')
+        expect(page.find('.reward-image')['src']).to have_content 'cup-icon.png'
+      end
     end
 
     scenario 'ask a question with errors' do

@@ -6,7 +6,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question, user: user) }
   let(:questions) { create_list(:question, 3, user: user) }
 
-  describe 'POST #index' do
+  describe 'GET #index' do
     before do
       login(user)
       get :index
@@ -21,7 +21,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #show' do
+  describe 'GET #show' do
     before do
       login(user)
       get :show, params: { id: question }
@@ -31,16 +31,26 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
+    it 'assigns new link for answer' do
+      expect(assigns(:answer).links.first).to be_a_new(Link)
+    end
+
     it 'renders show view' do
       expect(response).to render_template :show
     end
   end
 
-  describe 'POST #new' do
-    it 'renders new view' do
+  describe 'GET #new' do
+    before do
       login(user)
       get :new
+    end
 
+    it 'assigns a new question to @question' do
+      expect(assigns(:question).links.first).to be_a_new(Link)
+    end
+
+    it 'renders new view' do
       expect(response).to render_template :new
     end
   end

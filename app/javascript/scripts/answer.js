@@ -3,6 +3,6 @@ document.addEventListener('turbolinks:load', function() {
         event.preventDefault();
         $(this).hide();
         let answerId = $(this).data('answerId');
-        $('form#edit-answer-' + answerId).show();
+        $('.edit-answer-' + answerId).show();
     } )
 });

@@ -29,10 +29,12 @@ gem 'jbuilder', '~> 2.7'
 gem "aws-sdk-s3", require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'bootstrap', '~> 4.4.1'
+gem "cocoon"
 gem 'devise'
 gem 'jquery-rails'
 gem 'octicons', '~> 9.4'
 gem 'octicons_helper'
+gem "octokit", "~> 4.0"
 gem 'popper_js', '~> 1.16'
 gem 'slim-rails'
 gem 'simple_form'

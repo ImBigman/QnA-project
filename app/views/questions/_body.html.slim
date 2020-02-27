@@ -1,19 +1,26 @@
-strong Title:
-|&nbsp;
+strong Title:&nbsp;
 span.question-title =question.title
 br
-strong Question:
-|&nbsp;
+strong Question:&nbsp;
 span.question-body =question.body
 br
-strong from:
-|   #{question.user.email}
-br
+strong from:&nbsp;
+span =question.user.email
+- if question.links.exists?
+  br
+  span.link style='font-size: 9pt'
+    =render 'links/link_list', resource: question
 - if question.files.attached?
+  br
   span.question-files
     =render 'attachments/attachment', resource: question
-  br
+br
 - if current_user&.owner?(question)
+  -if question.reward.present?
+    span.question-reward
+      strong question reward:&nbsp;
+      =image_tag question.reward.image, size: "32x32", alt: "Reward", class: 'reward-image'
+    br
   = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
   | &nbsp;
   span style='font-size: 8pt' =link_to 'Delete a question',
@@ -21,3 +28,4 @@ br
           method: :delete,
           data: {confirm: 'Are you sure?'}, class: 'btn-sm btn-outline-danger mt-3'
 .question-edit-errors.text-danger.pt-3
+

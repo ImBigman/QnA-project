@@ -8,7 +8,8 @@ feature 'User can edit his answer', %q(
   given(:user) { create(:user) }
   given(:user1) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, :with_files, question: question, user: user) }
+  given!(:answer) { create(:answer, :with_files, :with_links, question: question, user: user) }
+  given(:link) { create(:link, name: 'Third', url: 'https://yandex.ru', linkable: question) }
 
   scenario 'Guest can not edit the answer', js: true do
     visit question_path(question)
@@ -64,6 +65,33 @@ feature 'User can edit his answer', %q(
 
         expect(page).to_not have_link 'feature_helpers.rb'
         expect(page).to have_link 'controller_helpers.rb'
+      end
+    end
+
+    scenario 'can add link', js: true do
+      within '.answers' do
+        expect(page).to have_field('Link name', with: answer.links.first.name)
+        expect(page).to have_field('Url', with: answer.links.first.url)
+        all('.answer_links_name input').last.set(link.name)
+        all('.answer_links_url input').last.set(link.url)
+
+        click_on 'Save'
+      end
+
+      expect(page).to have_link  link.name, href: link.url
+      expect(page).to have_link  answer.links.first.name, href: answer.links.first.url
+      expect(page).to have_link  answer.links.last.name, href: answer.links.last.url
+    end
+
+    scenario 'can delete any link', js: true do
+      within '.answers' do
+        all('.octicon-dash').first.click
+        click_on 'Save'
+      end
+
+      within '.answers' do
+        expect(page).to_not have_link answer.links.first.name, href: answer.links.first.url
+        expect(page).to have_link answer.links.last.name, href: answer.links.last.url
       end
     end
   end
