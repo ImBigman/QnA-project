@@ -11,8 +11,8 @@ RSpec.describe Link, type: :model do
 
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  let(:link) { create(:link, name: 'First', url: 'https://gist.github.com/ImBigman/8ca778b06a47e698bdbbb0b149f8dbdf', linkable: question) }
-  let(:link1) { create(:link, name: 'Second', url: 'https://google.ru', linkable: question) }
+  let(:link) { build(:link, name: 'First', url: 'https://gist.github.com/ImBigman/8ca778b06a47e698bdbbb0b149f8dbdf', linkable: question) }
+  let(:link1) { build(:link, name: 'Second', url: 'https://google.ru', linkable: question) }
 
   it '#gist?' do
     expect(link).to be_gist
@@ -20,7 +20,7 @@ RSpec.describe Link, type: :model do
   end
 
   it 'must be in the right order' do
-    [link, link1].each(&:reload)
+    [link, link1].each(&:save)
 
     expect(Link.all).to eq([link, link1])
   end

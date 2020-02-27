@@ -7,7 +7,7 @@ module ApplicationHelper
     end
   end
 
-  def gist_tag_helper(link)
-    '<script src=' + link.url + '.js></script>'
+  def javascript_link_tag(link)
+    render inline: '<script src=' + link.url + '.js></script>'
   end
 end
