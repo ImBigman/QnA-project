@@ -1,11 +1,12 @@
 class Answer < ApplicationRecord
   include Linkable
+  include Attachable
+  include Votable
 
   default_scope { order(best: :desc).order(:created_at) }
 
   belongs_to :question
   belongs_to :user
-  has_many_attached :files
 
   validates :body, presence: true, length: { minimum: 10 }
 

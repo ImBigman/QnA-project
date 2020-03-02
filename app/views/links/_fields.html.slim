@@ -1,4 +1,4 @@
 .nested-fields
   = f.input :name, label: "Link name" , required: false, input_html: { class: "col-md-6"}
   = f.input :url, required: false, input_html: { class: "col-md-6"}
-  = link_to_remove_association  octicon('dash', height: 24), f
+  = link_to_remove_association  octicon('dash', height: 24, class: 'text-danger'), f

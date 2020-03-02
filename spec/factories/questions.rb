@@ -7,6 +7,7 @@ FactoryBot.define do
     title
     body { 'Its test question body' }
     user_id { nil }
+    vote_score { 0 }
 
     trait :invalid do
       title { nil }

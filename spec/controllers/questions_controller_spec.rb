@@ -232,4 +232,162 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #positive_vote', format: :json do
+    context 'As not an author of resource' do
+      before { login(user1) }
+
+      it 'vote for resource' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(question.vote_score).to eq(1)
+      end
+
+      it 'render JSON response' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.body.to_i).to eq(question.vote_score)
+      end
+
+      it 'can not vote for resource twice' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.body).to eq('You have already voted')
+        expect(response.status).to eq 422
+        expect(question.vote_score).to eq(1)
+      end
+
+      describe 'You completely change your opinion' do
+        let(:question4) { create(:question, user: user, vote_score: -1) }
+        let!(:vote) {  create :vote, user_id: user1.id, votable: question4, score: -1 }
+
+        scenario 'from negative to positive' do
+          patch :positive_vote, params: { id: question4, question: attributes_for(:question, user: user), format: :json }
+          patch :positive_vote, params: { id: question4, question: attributes_for(:question, user: user), format: :json }
+          question4.reload
+
+          expect(response.body).to_not eq('You have already voted')
+          expect(question4.vote_score).to eq(1)
+        end
+      end
+    end
+
+    context 'As an author of resource' do
+      before { login(user) }
+
+      it 'can not vote for resource' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(question.vote_score).to eq(0)
+      end
+
+      it 'render JSON response' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.status).to eq(422)
+        expect(response.body).to eq('You cannot vote for yourself')
+      end
+    end
+
+    context 'As guest' do
+      it 'can not vote for resource' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(question.vote_score).to eq(0)
+      end
+
+      it 'render JSON response' do
+        patch :positive_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.status).to eq(401)
+      end
+    end
+  end
+
+  describe 'PATCH #negative_vote', format: :json do
+    context 'As not an author of resource' do
+      before { login(user1) }
+
+      it 'vote for resource' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(question.vote_score).to eq(-1)
+      end
+
+      it 'render JSON response' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.body.to_i).to eq(question.vote_score)
+      end
+
+      it 'can not vote for resource twice' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.body).to eq('You have already voted')
+        expect(response.status).to eq 422
+        expect(question.vote_score).to eq(-1)
+      end
+
+      describe 'You completely change your opinion' do
+        let(:question4) { create(:question, user: user, vote_score: 1) }
+        let!(:vote) { create :vote, user_id: user1.id, votable: question4, score: 1 }
+
+        scenario 'from positive to negative' do
+          patch :negative_vote, params: { id: question4, question: attributes_for(:question, user: user), format: :json }
+          patch :negative_vote, params: { id: question4, question: attributes_for(:question, user: user), format: :json }
+          question4.reload
+
+          expect(response.body).to_not eq('You have already voted')
+          expect(question4.vote_score).to eq(-1)
+        end
+      end
+    end
+
+    context 'As an author of resource' do
+      before { login(user) }
+
+      it 'can not vote for resource' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(question.vote_score).to eq(0)
+      end
+
+      it 'render JSON response' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.status).to eq(422)
+        expect(response.body).to eq('You cannot vote for yourself')
+      end
+    end
+
+    context 'As guest' do
+      it 'can not vote for resource' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(question.vote_score).to eq(0)
+      end
+
+      it 'render JSON response' do
+        patch :negative_vote, params: { id: question, question: attributes_for(:question, user: user), format: :json }
+        question.reload
+
+        expect(response.status).to eq(401)
+      end
+    end
+  end
 end

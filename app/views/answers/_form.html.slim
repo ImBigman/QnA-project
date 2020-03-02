@@ -1,6 +1,6 @@
 = simple_form_for @answer, url: question_answers_path(question), remote: true do |f|
   = f.input :body, label: 'Your answer:', input_html: { class: "col-md-8"}
-  - if current_user.nil?
+  -if !signed_in?
     =link_to 'Add a answer','', class: 'd-inline btn btn-primary disabled', :disabled => true
     span.text-secondary.ml-5.d-inline You need to sign in or sign up before continuing.
   -else
@@ -8,6 +8,6 @@
     = f.simple_fields_for :links do |links|
       = render 'links/fields', f: links
     .links
-      = link_to_add_association octicon('plus-small', height: 32), f, :links, partial: 'links/fields'
+      = link_to_add_association octicon('plus-small', height: 32, class: 'text-success'), f, :links, partial: 'links/fields'
       br
     =f.submit 'Add a answer', class: 'btn btn-outline-primary'

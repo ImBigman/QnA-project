@@ -1,13 +1,20 @@
 .row.bg-light.border.border-warning.rounded
   .col-6
     .question.pt-2.mb-1
-      =render 'questions/body'
+      .row.question-vote-errors
+        span.errors.ml-4.text-danger
+      .row
+        =render 'shared/vote_selector', resource: question
+        span.col-11
+          =render 'questions/body'
   .col-6.pt-2.question-edit-form.hidden
     =render 'questions/edit_form'
 br
 -unless question.answers.empty?
-  strong Answers:
-.answer-edit-errors
+  span.col-1
+    strong Answers:
+  span.answer-vote-errors.ml-5.text-danger
+.answer-edit-errors.ml-5.text-danger
   = render 'shared/errors', resource: @answer
 .answers
   = render question.answers

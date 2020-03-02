@@ -11,8 +11,6 @@ RSpec.describe Question, type: :model do
   it { should validate_length_of(:body).is_at_least(10) }
 
   it_behaves_like 'linkable'
-
-  it 'have many attached files' do
-    expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
-  end
+  it_behaves_like 'attachable'
+  it_behaves_like 'votable'
 end

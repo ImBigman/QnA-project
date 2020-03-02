@@ -1,6 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index]
 
+  include Votabled
+
   def index
     question.answers
   end

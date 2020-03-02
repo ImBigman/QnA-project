@@ -5,7 +5,7 @@
     = f.simple_fields_for :links do |links|
       = render 'links/fields', f: links
       .links
-      = link_to_add_association octicon('plus-small', height: 32), f, :links, partial: 'links/fields'
+      = link_to_add_association octicon('plus-small', height: 32, class: 'text-success'), f, :links, partial: 'links/fields'
   br
   span.attachments style='font-size: 10pt'
     - if question.files.attached?
