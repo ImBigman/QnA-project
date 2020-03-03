@@ -4,4 +4,8 @@ module Votable
   included do
     has_many :votes, dependent: :destroy, as: :votable
   end
+
+  def recount
+    votes.map(&:score).sum
+  end
 end

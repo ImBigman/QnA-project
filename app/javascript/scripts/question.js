@@ -7,14 +7,15 @@ document.addEventListener('turbolinks:load', function() {
 
     function questionVote(selector){
         $(selector).on('ajax:success', function (e) {
-            let xhr = e.detail[2];
+            let score = e.detail[0];
 
-            $('#vote-score').html(xhr.responseText);
+            $('.question-vote-errors .errors').html(' ');
+            $('#vote-score').html('<span>'+ score + '</span>');
         })
             .on('ajax:error', function (e) {
-                let xhr = e.detail[2];
+                let errors = e.detail[0];
 
-                $('.question-vote-errors .errors').html(xhr.responseText);
+                $('.question-vote-errors .errors').html('<span>'+  errors['error']  + '</span>')
             });
     }
 

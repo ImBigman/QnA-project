@@ -12,14 +12,15 @@ document.addEventListener('turbolinks:load', function() {
         let answerId = $(this).attr("href").match(/\d+/)[0];
 
         $(this).on('ajax:success', function (e) {
-            let xhr = e.detail[2];
+            let score = e.detail[0];
 
-            $('.answer_id_' + answerId + ' #vote-score').html(xhr.responseText);
+            $('.answer-vote-errors').html(' ');
+            $('.answer_id_' + answerId + ' #vote-score').html('<span>'+ score + '</span>');
         })
             .on('ajax:error', function (e) {
-                let xhr = e.detail[2];
+                let errors = e.detail[0];
 
-                $('.answer-vote-errors').html(xhr.responseText);
+                $('.answer-vote-errors').html('<span>'+  errors['error']  + '</span>');
             })
     }
 

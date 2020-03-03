@@ -10,8 +10,4 @@ module ApplicationHelper
   def javascript_link_tag(link)
     render inline: '<script src=' + link.url + '.js></script>'
   end
-
-  def pathfinder(action, resource)
-    "/#{resource.class.name.downcase.pluralize}/#{resource.id}/#{action}"
-  end
 end

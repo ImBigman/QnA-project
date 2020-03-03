@@ -62,10 +62,12 @@ feature 'User can vote for a answer', %q(
   end
 
   describe 'Vote', js: true do
-    scenario 'for a answer as not an author one more time' do
+    background do
       sign_in(user1)
       visit question_path(question)
+    end
 
+    scenario 'for a answer as not an author one more time' do
       within '.answers' do
         expect(all('#vote-score').first).to have_content '0'
         all('a#vote-for').first.click
@@ -79,10 +81,7 @@ feature 'User can vote for a answer', %q(
     end
 
     scenario 'against a answer as not an author one more time' do
-      sign_in(user1)
-      visit question_path(question)
-
-      within '.question' do
+      within '.answers' do
         expect(find('#vote-score')).to have_content '0'
         all('a#vote-against').first.click
         all('a#vote-against').first.click
@@ -93,21 +92,17 @@ feature 'User can vote for a answer', %q(
     end
 
     describe 'You completely change your opinion' do
-      given(:question) { create(:question, user: user, vote_score: -1) }
+      given!(:vote) { create(:vote, user_id: user1.id, votable: answer, score: -1) }
 
       scenario 'from negative to positive' do
-        sign_in(user1)
-        visit question_path(question)
-
-        within '.question' do
-          expect(find('#vote-score')).to have_content '-1'
+        within '.answers' do
           all('a#vote-for').first.click
 
           expect(find('#vote-score')).to have_content '0'
           all('a#vote-for').first.click
-        end
 
-        expect(page).to have_content '1'
+          expect(find('#vote-score')).to have_content '1'
+        end
       end
     end
   end

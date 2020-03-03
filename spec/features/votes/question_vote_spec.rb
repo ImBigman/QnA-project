@@ -6,7 +6,7 @@ feature 'User can vote for a question', %q(
 ) do
   given(:user) { create(:user) }
   given(:user1) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given!(:question) { create(:question, user: user) }
 
   describe 'Vote', js: true do
     background do
@@ -91,18 +91,17 @@ feature 'User can vote for a question', %q(
     end
 
     describe 'You completely change your opinion' do
-      given(:question) { create(:question, user: user, vote_score: -1) }
+      given!(:vote) { create(:vote, user_id: user1.id, votable: question, score: -1) }
 
       scenario 'from negative to positive' do
         within '.question' do
-          expect(find('#vote-score')).to have_content '-1'
           all('a#vote-for').first.click
 
           expect(find('#vote-score')).to have_content '0'
           all('a#vote-for').first.click
-        end
 
-        expect(page).to have_content '1'
+          expect(find('#vote-score')).to have_content '1'
+        end
       end
     end
   end

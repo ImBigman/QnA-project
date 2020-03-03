@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
 
-  include Votabled
+  include Voted
 
   def index
     @questions = Question.order(:created_at)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_29_092714) do
+ActiveRecord::Schema.define(version: 2020_02_28_185753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 2020_02_29_092714) do
     t.bigint "question_id"
     t.bigint "user_id", null: false
     t.boolean "best", default: false, null: false
-    t.integer "vote_score", default: 0
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
@@ -64,7 +63,6 @@ ActiveRecord::Schema.define(version: 2020_02_29_092714) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
-    t.integer "vote_score", default: 0
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
@@ -91,7 +89,7 @@ ActiveRecord::Schema.define(version: 2020_02_29_092714) do
   end
 
   create_table "votes", force: :cascade do |t|
-    t.integer "score"
+    t.integer "score", null: false
     t.string "votable_type"
     t.bigint "votable_id"
     t.bigint "user_id", null: false

@@ -1,5 +1,5 @@
 class Vote < ApplicationRecord
   belongs_to :votable, polymorphic: true
 
-  validates :score, presence: true
+  validates :score, presence: true, inclusion: { in: [-1, 1] }
 end

@@ -8,7 +8,6 @@ FactoryBot.define do
     user_id { nil }
     question { nil }
     best { false }
-    vote_score { 0 }
 
     trait :invalid do
       body { nil }
