@@ -27,7 +27,7 @@ shared_examples 'voted' do
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(response.body.split(',').last.split('"').join[0..-2]).to include("rating:#{votable.rating}")
+        expect(JSON.parse(response.body)['rating']).to eq(votable.rating)
       end
 
       it 'can not vote for resource twice' do
@@ -107,8 +107,8 @@ shared_examples 'voted' do
       it 'render JSON response' do
         patch :negative_vote, params: { id: votable, format: :json }
         votable.reload
-        
-        expect(response.body.split(',').last.split('"').join[0..-2]).to include("rating:#{votable.rating}")
+
+        expect(JSON.parse(response.body)['rating']).to eq(votable.rating)
       end
 
       it 'can not vote against of resource twice' do
