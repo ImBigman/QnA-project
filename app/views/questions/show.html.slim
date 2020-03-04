@@ -3,7 +3,7 @@
     .question.pt-2.mb-1
       .row.question-vote-errors
         span.errors.ml-4.text-danger
-      .row
+      .row class='question_id_#{question.id}'
         =render 'shared/vote_selector', resource: question
         span.col-11.mt-2
           =render 'questions/body'
@@ -13,7 +13,8 @@ br
 -unless question.answers.empty?
   span.col-1
     strong Answers:
-  span.answer-vote-errors.ml-5.text-danger
+  span.answer-vote-errors
+    span.errors.ml-5.text-danger
 .answer-edit-errors.ml-5.text-danger
   = render 'shared/errors', resource: @answer
 .answers

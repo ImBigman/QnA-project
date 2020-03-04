@@ -76,7 +76,6 @@ feature 'User can vote for a question', %q(
       end
 
       expect(page).to have_content '1'
-      expect(page).to have_content 'You have already voted'
     end
 
     scenario 'against a question not as an author one more time' do
@@ -87,7 +86,6 @@ feature 'User can vote for a question', %q(
       end
 
       expect(page).to have_content '-1'
-      expect(page).to have_content 'You have already voted'
     end
 
     describe 'You completely change your opinion' do

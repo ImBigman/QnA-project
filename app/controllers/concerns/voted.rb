@@ -6,19 +6,11 @@ module Voted
   end
 
   def positive_vote
-    if acceptance_score <= 0
-      vote(1)
-    else
-      render json: { error: 'You have already voted' }, status: 422
-    end
+    vote(1) if acceptance_score <= 0
   end
 
   def negative_vote
-    if acceptance_score >= 0
-      vote(-1)
-    else
-      render json: { error: 'You have already voted' }, status: 422
-    end
+    vote(-1) if acceptance_score >= 0
   end
 
   private
@@ -33,16 +25,20 @@ module Voted
 
   def vote(number)
     if current_user.owner?(@votable)
-      render json: { error: 'You cannot vote for yourself' }, status: 422
+      render json: { type: votable_type(@votable), error: 'You cannot vote for yourself' }, status: 422
     else
       @votable.votes.create(score: number, user_id: current_user.id)
-      render json: @votable.recount
+      render json: { id: @votable.id, type: votable_type(@votable), rating: @votable.rating }
     end
+  end
+
+  def votable_type(obj)
+    obj.class.name.downcase
   end
 
   def acceptance_score
     votes = @votable.votes.where(user_id: current_user.id)
-    votes.map(&:score).sum
+    votes.sum(:score)
   end
 end
 

@@ -1,17 +1,11 @@
 require 'rails_helper'
 
-shared_examples 'voted' do |klass|
+shared_examples 'voted' do
   let(:user) { create(:user) }
   let(:user1) { create(:user) }
   let(:controller) { described_class }
   let(:model) { controller.controller_name.classify.constantize }
   let(:question) { create(:question, user: user) }
-
-  if klass == 'Question'
-    let(:votable) { create(model.to_s.underscore.to_sym, user: user) }
-  else
-    let(:votable) { create(model.to_s.underscore.to_sym, question: question, user: user) }
-  end
 
   describe 'PATCH #positive_vote', format: :json do
     context 'As not an author of resource' do
@@ -26,14 +20,14 @@ shared_examples 'voted' do |klass|
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(votable.recount).to eq(1)
+        expect(votable.rating).to eq(1)
       end
 
       it 'render JSON response' do
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(response.body.to_i).to eq(votable.recount)
+        expect(response.body.split(',').last.split('"').join[0..-2]).to include("rating:#{votable.rating}")
       end
 
       it 'can not vote for resource twice' do
@@ -41,9 +35,7 @@ shared_examples 'voted' do |klass|
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(response.body).to have_content('You have already voted')
-        expect(response.status).to eq 422
-        expect(votable.recount).to eq(1)
+        expect(votable.rating).to eq(1)
       end
 
       describe 'You completely change your opinion' do
@@ -55,7 +47,7 @@ shared_examples 'voted' do |klass|
           votable.reload
 
           expect(response.body).to_not eq('You have already voted')
-          expect(votable.recount).to eq(1)
+          expect(votable.rating).to eq(1)
         end
       end
     end
@@ -67,7 +59,7 @@ shared_examples 'voted' do |klass|
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(votable.recount).to eq(0)
+        expect(votable.rating).to eq(0)
       end
 
       it 'render JSON response' do
@@ -84,7 +76,7 @@ shared_examples 'voted' do |klass|
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(votable.recount).to eq(0)
+        expect(votable.rating).to eq(0)
       end
 
       it 'render JSON response' do
@@ -109,14 +101,14 @@ shared_examples 'voted' do |klass|
         patch :negative_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(votable.recount).to eq(-1)
+        expect(votable.rating).to eq(-1)
       end
 
       it 'render JSON response' do
         patch :negative_vote, params: { id: votable, format: :json }
         votable.reload
-
-        expect(response.body.to_i).to eq(votable.recount)
+        
+        expect(response.body.split(',').last.split('"').join[0..-2]).to include("rating:#{votable.rating}")
       end
 
       it 'can not vote against of resource twice' do
@@ -124,9 +116,7 @@ shared_examples 'voted' do |klass|
         patch :negative_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(response.body).to have_content('You have already voted')
-        expect(response.status).to eq 422
-        expect(votable.recount).to eq(-1)
+        expect(votable.rating).to eq(-1)
       end
 
       describe 'You completely change your opinion' do
@@ -138,7 +128,7 @@ shared_examples 'voted' do |klass|
           votable.reload
 
           expect(response.body).to_not eq('You have already voted')
-          expect(votable.recount).to eq(-1)
+          expect(votable.rating).to eq(-1)
         end
       end
     end
@@ -150,7 +140,7 @@ shared_examples 'voted' do |klass|
         patch :negative_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(votable.recount).to eq(0)
+        expect(votable.rating).to eq(0)
       end
 
       it 'render JSON response' do
@@ -166,7 +156,7 @@ shared_examples 'voted' do |klass|
       it 'can not vote against of resource' do
         patch :negative_vote, params: { id: votable, format: :json }
 
-        expect(votable.recount).to eq(0)
+        expect(votable.rating).to eq(0)
       end
 
       it 'render JSON response' do

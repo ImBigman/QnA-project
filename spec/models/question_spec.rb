@@ -12,5 +12,5 @@ RSpec.describe Question, type: :model do
 
   it_behaves_like 'linkable'
   it_behaves_like 'attachable'
-  it_behaves_like 'votable', 'Question'
+  it_behaves_like 'votable', let(:votable) { create(model.to_s.underscore.to_sym, user: user) }
 end

@@ -233,5 +233,5 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  it_behaves_like 'voted', 'Question'
+  it_behaves_like 'voted', let(:votable) { create(model.to_s.underscore.to_sym, user: user) }
 end

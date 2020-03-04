@@ -5,7 +5,7 @@ module Votable
     has_many :votes, dependent: :destroy, as: :votable
   end
 
-  def recount
-    votes.map(&:score).sum
+  def rating
+    votes.sum(:score)
   end
 end
