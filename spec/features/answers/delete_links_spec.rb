@@ -21,7 +21,6 @@ feature 'User can delete links from answer.', %q(
 
   scenario 'Authenticated user can not delete a links into answer as not an author' do
     sign_in(user1)
-
     visit question_path(question)
 
     expect(page).to have_content answer.body

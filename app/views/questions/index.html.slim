@@ -1,8 +1,8 @@
 p= link_to 'Ask question', new_question_path, class:"btn btn-outline-primary"
 
 table class="table mt-3"
-  tr
-    th
-      | Question title
+  tr.row
+    th.col-12
+      |Questions:
 
   = render @questions

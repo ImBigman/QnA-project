@@ -7,9 +7,12 @@ class User < ApplicationRecord
          :rememberable,
          :validatable
 
+  include Votable
+
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
   has_many :rewards, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   def owner?(resource)
     resource.user_id == id

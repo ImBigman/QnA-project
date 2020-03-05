@@ -1,0 +1,19 @@
+span.col-1.vote-block style ="padding-right: 0px;"
+  .row
+    -if current_user.nil? || current_user.owner?(resource)
+      span.mx-auto =octicon("triangle-up", height: 24, class: 'text-muted', id: 'for-disabled')
+    - else
+      span.mx-auto = link_to octicon("triangle-up", height: 24, class: 'text-success'),
+                                                    polymorphic_path(resource, action: 'positive_vote'),
+                                                    method: :patch, remote: true, data: {type: :json},
+                                                    id: 'vote-for'
+  .row
+    span.mx-auto id="vote-score" = resource.rating
+  .row
+    -if current_user.nil? || current_user.owner?(resource)
+      span.mx-auto =octicon("triangle-down", height: 24, class: 'text-muted', id: 'against-disabled')
+    -else
+      span.mx-auto = link_to octicon("triangle-down", height: 24, class: 'text-danger'),
+                                                      polymorphic_path(resource, action: 'negative_vote'),
+                                                      method: :patch, remote: true, data: {type: :json},
+                                                      id: 'vote-against'

@@ -11,6 +11,7 @@ require("jquery");
 require("../scripts/answer");
 require("../scripts/question");
 require("../scripts/best_answer");
+require("../scripts/votes");
 require("../scripts/direct_uploads");
 require("popper.js");
 

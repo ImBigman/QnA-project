@@ -15,6 +15,8 @@ RSpec.describe Answer, type: :model do
   let!(:reward) { create :reward, question: question }
 
   it_behaves_like 'linkable'
+  it_behaves_like 'attachable'
+  it_behaves_like 'votable', let(:votable) { create(model.to_s.underscore.to_sym, question: question, user: user) }
 
   describe '#best?' do
     it 'is the best?' do
@@ -53,9 +55,5 @@ RSpec.describe Answer, type: :model do
       expect(Answer.default_scoped.to_sql).to eq Answer.all.order(best: :desc).order(:created_at).to_sql
       expect(Answer.all).to eq([answer1, answer, answer2])
     end
-  end
-
-  it 'have many attached files' do
-    expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 end
