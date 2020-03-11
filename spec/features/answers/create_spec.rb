@@ -48,4 +48,28 @@ feature 'User can create answer of the question', %q(
 
     expect(page).to have_link('Add a answer', href: '')
   end
+
+  describe 'multiple sessions' do
+    scenario "answer appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: 'This is test answer for some question'
+        click_on 'Add a answer'
+
+        expect(page).to have_content 'This is test answer for some question'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'This is test answer for some question'
+      end
+    end
+  end
 end

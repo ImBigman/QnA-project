@@ -1,0 +1,5 @@
+span class ="comment-block hidden"
+  = simple_form_for resource, url: path,  class: 'hidden ml-1',  remote: true do |f|
+    = f.text_area :body, style: 'width: 90%'
+    br
+    = f.submit 'save comment', class: 'btn btn-outline-primary btn-sm', style: 'font-size: 8pt'

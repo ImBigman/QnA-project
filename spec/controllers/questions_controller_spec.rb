@@ -84,6 +84,12 @@ RSpec.describe QuestionsController, type: :controller do
           post :create, params: { question: attributes_for(:question, user: user) }
           expect(response).to redirect_to assigns(:question)
         end
+
+        it 'streaming to channel' do
+          expect do
+            post :create, params: { question: attributes_for(:question, user: user) }
+          end.to broadcast_to('questions').with(a_hash_including(action: 'create'))
+        end
       end
 
       context 'with invalid attributes' do
@@ -199,6 +205,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to index view' do
         delete :destroy, params: { id: question }
         expect(response).to redirect_to questions_path
+      end
+
+      it 'streaming to channel' do
+        expect { delete :destroy, params: { id: question } }.to broadcast_to('questions').with(a_hash_including(action: 'destroy'))
       end
     end
 

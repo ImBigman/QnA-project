@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
+  after_action :publishing_question, only: %i[create destroy]
 
   include Voted
 
@@ -10,6 +11,8 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answer.links.build
+    gon.question_id = question.id
+    gon.question_owner_id = question.user_id
   end
 
   def new
@@ -42,6 +45,16 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publishing_question
+    return if question.errors.any?
+
+    ActionCable.server.broadcast('questions',
+                                 action: action_name,
+                                 id: question.id,
+                                 item: ApplicationController.render(partial: 'questions/question',
+                                                                    locals: { question: question }))
+  end
 
   def question
     @question ||= params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new

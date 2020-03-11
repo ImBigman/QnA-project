@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index]
+  after_action :publishing_answer, only: %i[create]
 
   include Voted
 
@@ -33,6 +34,16 @@ class AnswersController < ApplicationController
 
   def question
     @question ||= Question.find(params[:question_id])
+  end
+
+  def publishing_answer
+    return if answer.errors.any?
+
+    ActionCable.server.broadcast("answers_for_question_#{question.id}",
+                                 author: answer.user.email,
+                                 rating: answer.rating,
+                                 answer: answer,
+                                 links: answer.links)
   end
 
   helper_method :question
