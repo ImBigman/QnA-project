@@ -50,6 +50,12 @@ RSpec.describe CommentsController, type: :controller do
             expect(response).to render_template :create
             expect(response).to have_http_status :ok
           end
+
+          it 'do not streaming to channel' do
+            expect do
+              post :create, params: { comment: attributes_for(:comment, :invalid), question_id: question, format: :js }
+            end.to_not broadcast_to("question_#{question.id}_comments")
+          end
         end
       end
 
@@ -93,6 +99,12 @@ RSpec.describe CommentsController, type: :controller do
             post :create, params: { comment: attributes_for(:comment, :invalid), answer_id: answer, format: :js }
             expect(response).to render_template :create
             expect(response).to have_http_status :ok
+          end
+
+          it 'do not streaming to channel' do
+            expect do
+              post :create, params: { comment: attributes_for(:comment, :invalid), answer_id: answer, format: :js }
+            end.to_not broadcast_to("question_#{question.id}_comments")
           end
         end
       end

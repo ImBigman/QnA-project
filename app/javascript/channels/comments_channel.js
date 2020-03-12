@@ -8,8 +8,8 @@ $(document).on('turbolinks:load', function () {
 
         const template = require('../hbs/comment.hbs');
 
-        $("."+ data.type +"_id_"+ data.id +' .empty').hide();
-        $("."+ data.type +"_id_"+ data.id +' .'+ data.type +'-comments').append(template(data));
+        $(`.${data.type}_id_${data.id} .empty`).hide();
+        $(`.${data.type}_id_${data.id} .${data.type}-comments`).append(template(data));
       }
     })
 });

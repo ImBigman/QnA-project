@@ -9,12 +9,10 @@ RSpec.describe Comment, type: :model do
 
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  let(:comment) { build(:comment, commentable: question, user: user) }
-  let(:comment1) { build(:comment, commentable: question, user: user) }
+  let(:comment) { create(:comment, commentable: question, user: user) }
+  let(:comment1) { create(:comment, commentable: question, user: user) }
 
   it 'must be in the right order' do
-    [comment, comment1].each(&:save)
-
     expect(Comment.all).to eq([comment, comment1])
   end
 end

@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  after_action :publishing_comment, only: %i[create]
+  after_action :publish_comment, only: %i[create]
 
   def create
     @comment = commentable.comments.new(comment_params)
@@ -10,17 +10,17 @@ class CommentsController < ApplicationController
 
   private
 
-  def publishing_comment
+  def publish_comment
     return if @comment.errors.any?
 
-    ActionCable.server.broadcast("question_#{question}_comments",
+    ActionCable.server.broadcast("question_#{question_id}_comments",
                                  id: commentable.id,
                                  type: commentable.class.name.underscore,
                                  author: @comment.user.email,
                                  comment: @comment)
   end
 
-  def question
+  def question_id
     if commentable.class == Question
       commentable.id
     else

@@ -7,6 +7,7 @@ feature 'User can create answer of the question', %q(
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
+  given(:question1) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -69,6 +70,33 @@ feature 'User can create answer of the question', %q(
 
       Capybara.using_session('guest') do
         expect(page).to have_content 'This is test answer for some question'
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question1)
+        expect(page).to_not have_content 'This is test answer for some question'
+      end
+    end
+
+    scenario "answer do not appears on another question's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question1)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: 'This is test answer for some question'
+        click_on 'Add a answer'
+
+        expect(page).to have_content 'This is test answer for some question'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to_not have_content 'This is test answer for some question'
       end
     end
   end

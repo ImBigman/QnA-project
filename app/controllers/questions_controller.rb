@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  after_action :publishing_question, only: %i[create destroy]
+  after_action :publish_question, only: %i[create destroy]
 
   include Voted
 
@@ -46,7 +46,7 @@ class QuestionsController < ApplicationController
 
   private
 
-  def publishing_question
+  def publish_question
     return if question.errors.any?
 
     ActionCable.server.broadcast('questions',

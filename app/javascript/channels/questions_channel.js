@@ -5,11 +5,12 @@ $(document).on('turbolinks:load', function () {
   if (questionsList.length) {
     consumer.subscriptions.create("QuestionsChannel", {
       received(data) {
-        if (data.action === 'create') {
-          questionsList.append(data.item);
-        }
-        if (data.action === 'destroy') {
-          $('.question_id_'+ data.id).remove();
+        switch (data.action) {
+          case 'create':
+            questionsList.append(data.item);
+            break;
+          case 'destroy':
+              $(`.question_id_${data.id}`).remove();
         }
       }
     })

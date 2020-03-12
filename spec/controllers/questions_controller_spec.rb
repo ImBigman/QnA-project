@@ -85,7 +85,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to redirect_to assigns(:question)
         end
 
-        it 'streaming to channel' do
+        it 'streaming to channel after create' do
           expect do
             post :create, params: { question: attributes_for(:question, user: user) }
           end.to broadcast_to('questions').with(a_hash_including(action: 'create'))
@@ -100,6 +100,12 @@ RSpec.describe QuestionsController, type: :controller do
         it 're-render new view' do
           post :create, params: { question: attributes_for(:question, :invalid) }
           expect(response).to render_template :new
+        end
+
+        it 'do not streaming to channel' do
+          expect do
+            post :create, params: { question: attributes_for(:question, :invalid) }
+          end.to_not broadcast_to('questions')
         end
       end
     end

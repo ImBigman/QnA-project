@@ -39,6 +39,12 @@ RSpec.describe AnswersController, type: :controller do
           post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid), format: :js }
           expect(response).to render_template :create
         end
+
+        it 'do not streaming to channel' do
+          expect do
+            post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid), format: :js }
+          end.to_not broadcast_to("answers_for_question_#{question.id}")
+        end
       end
     end
 
