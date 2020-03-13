@@ -84,6 +84,12 @@ RSpec.describe QuestionsController, type: :controller do
           post :create, params: { question: attributes_for(:question, user: user) }
           expect(response).to redirect_to assigns(:question)
         end
+
+        it 'streaming to channel after create' do
+          expect do
+            post :create, params: { question: attributes_for(:question, user: user) }
+          end.to broadcast_to('questions').with(a_hash_including(action: 'create'))
+        end
       end
 
       context 'with invalid attributes' do
@@ -94,6 +100,12 @@ RSpec.describe QuestionsController, type: :controller do
         it 're-render new view' do
           post :create, params: { question: attributes_for(:question, :invalid) }
           expect(response).to render_template :new
+        end
+
+        it 'do not streaming to channel' do
+          expect do
+            post :create, params: { question: attributes_for(:question, :invalid) }
+          end.to_not broadcast_to('questions')
         end
       end
     end
@@ -199,6 +211,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to index view' do
         delete :destroy, params: { id: question }
         expect(response).to redirect_to questions_path
+      end
+
+      it 'streaming to channel' do
+        expect { delete :destroy, params: { id: question } }.to broadcast_to('questions').with(a_hash_including(action: 'destroy'))
       end
     end
 

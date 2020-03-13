@@ -22,6 +22,12 @@ RSpec.describe AnswersController, type: :controller do
 
           expect(assigns(:answer).user).to eq user
         end
+
+        it 'streaming to channel' do
+          expect do
+            post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
+          end.to broadcast_to("answers_for_question_#{question.id}").with(a_hash_including(author: user.email))
+        end
       end
 
       context 'with invalid attributes' do
@@ -32,6 +38,12 @@ RSpec.describe AnswersController, type: :controller do
         it 're-render new view' do
           post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid), format: :js }
           expect(response).to render_template :create
+        end
+
+        it 'do not streaming to channel' do
+          expect do
+            post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid), format: :js }
+          end.to_not broadcast_to("answers_for_question_#{question.id}")
         end
       end
     end

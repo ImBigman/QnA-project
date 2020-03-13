@@ -15,4 +15,3 @@ shared_examples_for 'votable' do
     end
   end
 end
-

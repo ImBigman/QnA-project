@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'bootstrap', '~> 4.4.1'
 gem "cocoon"
 gem 'devise'
+gem 'gon'
+gem 'handlebars-source', '~> 4.0', '>= 4.0.5'
 gem 'jquery-rails'
 gem 'octicons', '~> 9.4'
 gem 'octicons_helper'

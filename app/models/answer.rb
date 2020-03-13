@@ -5,6 +5,8 @@ class Answer < ApplicationRecord
 
   default_scope { order(best: :desc).order(:created_at) }
 
+  has_many :comments, dependent: :destroy, as: :commentable
+
   belongs_to :question
   belongs_to :user
 
