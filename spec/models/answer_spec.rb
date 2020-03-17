@@ -29,7 +29,7 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe 'up_to_best!' do
+  describe '.up_to_best!' do
     before { answer1.up_to_best! }
 
     it 'make answer the best' do

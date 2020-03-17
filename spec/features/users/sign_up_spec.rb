@@ -10,6 +10,7 @@ feature 'User can sign up', %q(
 
   background do
     visit questions_path
+    clear_emails
     click_on 'Registration'
   end
 
@@ -24,8 +25,20 @@ feature 'User can sign up', %q(
       fill_in 'user[password_confirmation]', with: '12345678'
       click_on 'Sign up'
 
-      expect(page).to have_content 'Welcome! You have signed up successfully.'
+      expect(page).to have_content 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.'
     end
+
+    scenario 'confirm email' do
+      fill_in 'user[password_confirmation]', with: '12345678'
+      click_on 'Sign up'
+
+      expect(page).to have_content 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.'
+      open_email('test_mail@test.com')
+      current_email.click_link 'Confirm my account'
+
+      expect(page).to have_content 'Your email address has been successfully confirmed'
+    end
+
 
     scenario 'try to sign up with errors' do
       fill_in 'user[password_confirmation]', with: '12345678911'

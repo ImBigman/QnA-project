@@ -37,13 +37,13 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
-
+  config.include OmniauthHelper
   Capybara.javascript_driver = :selenium_chrome_headless
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-
+  OmniAuth.config.test_mode = true
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
