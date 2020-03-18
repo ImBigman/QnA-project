@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ConfirmationsController, type: :controller do
+  include Capybara::Email::DSL
+
   let(:user) { create(:user) }
   before { @request.env['devise.mapping'] = Devise.mappings[:user] }
 
@@ -21,6 +23,9 @@ RSpec.describe ConfirmationsController, type: :controller do
       expect do
         post :create, params: { user: attributes_for(:user, email: 'new@email.com'), user_id: user }
       end.to change(ActionMailer::Base.deliveries, :count).by(1)
+
+      open_email('new@email.com')
+      expect(current_email).to have_content 'Confirm my account'
     end
 
     it 'redirect to root path' do
@@ -47,9 +52,13 @@ RSpec.describe ConfirmationsController, type: :controller do
         expect do
           post :create, params: { user: attributes_for(:user), user_id: user }
         end.to change(ActionMailer::Base.deliveries, :count).by(1)
+
+        email = ActionMailer::Base.deliveries.last.body
+
+        expect(email).to match /#{assigns(:user).email}/
+        expect(email).to match /You can confirm your account email through the link below/
       end
     end
-
   end
 end
 

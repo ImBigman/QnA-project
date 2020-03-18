@@ -14,7 +14,7 @@ feature 'User can sign in with vkontakte authorization', %q(
     given!(:authorization) { create(:authorization, user: user, provider: 'vkontakte', uid: '123456') }
 
     scenario 'try to sign in' do
-      mock_auth_hash('vkontakte', '')
+      mock_auth_hash('vkontakte', email: '')
 
       click_on 'Sign in with Vkontakte'
 
@@ -34,7 +34,7 @@ feature 'User can sign in with vkontakte authorization', %q(
   describe 'Unregistered user' do
     background do
       clean_mock_auth('vkontakte')
-      mock_auth_hash('vkontakte', '')
+      mock_auth_hash('vkontakte', email: '')
       click_on 'Sign in with Vkontakte'
     end
 

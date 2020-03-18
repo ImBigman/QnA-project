@@ -6,15 +6,15 @@
     end
 
     def call
-      authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
+      authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
       return authorization.user if authorization
 
-      user = User.where(email: email(auth)).first
+      user = User.find_by(email: email(auth))
       if user
-        user.authorizations.create(provider: auth.provider, uid: auth.uid)
+        user.authorizations.create!(provider: auth.provider, uid: auth.uid)
         user
       else
-        create_user(auth)
+        create_user!(auth)
       end
     end
 
@@ -28,7 +28,7 @@
       end
     end
 
-    def create_user(auth)
+    def create_user!(auth)
       password = Devise.friendly_token[0, 20]
       if email(auth).include?('uid_')
         user = User.new(email: email(auth), password: password, password_confirmation: password)
@@ -37,7 +37,7 @@
       else
         user = User.create!(email: email(auth), password: password, password_confirmation: password)
       end
-      user.authorizations.create(provider: auth.provider, uid: auth.uid)
+      user.authorizations.create!(provider: auth.provider, uid: auth.uid)
       user
     end
   end

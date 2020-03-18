@@ -13,7 +13,7 @@ feature 'User can sign in with GitHub authorization', %q(
 
   describe 'Registered user' do
     scenario 'try to sign in' do
-      mock_auth_hash('github', 'test@mail.ru')
+      mock_auth_hash('github', email: 'test@mail.ru')
 
       click_on 'Sign in with GitHub'
 
@@ -33,7 +33,7 @@ feature 'User can sign in with GitHub authorization', %q(
   describe 'Unregistered user' do
     background do
       clean_mock_auth('github')
-      mock_auth_hash('github', 'test1@mail.ru')
+      mock_auth_hash('github', email: 'test1@mail.ru')
     end
 
     scenario 'try to sign in' do

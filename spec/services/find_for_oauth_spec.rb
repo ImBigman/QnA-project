@@ -9,9 +9,18 @@ RSpec.describe FindForOauthService do
     subject { FindForOauthService.new(auth) }
 
     context 'user already has authorization' do
+      let!(:authorization) { create(:authorization, provider: 'github', uid: '1234567', user_id: user.id) }
+
       it 'returns the user' do
-        user.authorizations.create(provider: 'github', uid: '1234567')
         expect(subject.call).to eq user
+      end
+
+      it 'does not create new user' do
+        expect { subject.call }.to_not change(User, :count)
+      end
+
+      it 'does not create authorization for user' do
+        expect { subject.call }.to_not change(user.authorizations, :count)
       end
     end
 
@@ -24,7 +33,7 @@ RSpec.describe FindForOauthService do
         end
 
         it 'create authorization for user' do
-          expect { subject.call }.to change(user.authorizations, :count).by(1)
+          expect { subject.call }.to change(Authorization, :count).by(1)
         end
 
         it 'create authorization with provider and uid' do
@@ -56,8 +65,7 @@ RSpec.describe FindForOauthService do
         end
 
         it 'create authorization for user' do
-          user = subject.call
-          expect(user.authorizations).to_not be_empty
+          expect { subject.call }.to change(Authorization, :count).by(1)
         end
 
         it 'create authorization with provider and uid' do
@@ -90,7 +98,7 @@ RSpec.describe FindForOauthService do
         end
 
         it 'create authorization for user' do
-          expect { subject.call }.to change(user1.authorizations, :count).by(1)
+          expect { subject.call }.to change(Authorization, :count).by(1)
         end
 
         it 'create authorization with provider and uid' do
@@ -122,8 +130,7 @@ RSpec.describe FindForOauthService do
         end
 
         it 'create authorization for user' do
-          user = subject.call
-          expect(user.authorizations).to_not be_empty
+          expect { subject.call }.to change(Authorization, :count).by(1)
         end
 
         it 'create authorization with provider and uid' do

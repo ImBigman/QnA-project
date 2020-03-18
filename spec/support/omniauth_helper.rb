@@ -1,5 +1,5 @@
 module OmniauthHelper
-  def mock_auth_hash(provider, email)
+  def mock_auth_hash(provider, email:)
     OmniAuth.config.mock_auth[provider.to_sym] = OmniAuth::AuthHash.new(
       'provider' => provider,
       'uid' => '123456',
