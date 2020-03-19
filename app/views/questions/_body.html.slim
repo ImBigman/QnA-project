@@ -1,0 +1,45 @@
+strong Title:&nbsp;
+span.question-title =question.title
+br
+strong Question:&nbsp;
+span.question-body =question.body
+br
+strong from:&nbsp;
+span =question.user.email
+- if question.links.exists?
+  br
+  span.link style='font-size: 9pt'
+    =render 'links/link_list', resource: question
+- if question.files.attached?
+  br
+  span.question-files
+    =render 'attachments/attachment', resource: question
+br
+- if current_user&.owner?(question)
+  -if question.reward.present?
+    span.question-reward
+      strong question reward:&nbsp;
+      =image_tag question.reward.image, size: "32x32", alt: "Reward", class: 'reward-image'
+    br
+  = link_to 'Edit','', id: 'question-edit', class: ' btn-sm btn-outline-info mt-3'
+  | &nbsp;
+  span style='font-size: 8pt' =link_to 'Delete a question',
+          question_path(question),
+          method: :delete,
+          data: {confirm: 'Are you sure?'}, class: 'btn-sm btn-outline-danger mt-3'
+  br
+.question-comment-errors.text-danger style='font-size: 10pt'
+  = render 'shared/errors', resource: @comment
+fieldset.question-comments
+  legend.w-auto.text-primary style='font-size: 8pt' comments:
+  -if question.comments.exists?
+    =render question.comments
+  -else
+    span.text-secondary.empty style='font-size: 10pt' 0 comment's
+  =render 'comments/comment_form', resource: Comment.new, path: question_comments_path(question)
+-if signed_in?
+  = content_tag(:span, class: 'text-primary comment-button',  style: 'font-size: 8pt')
+    = octicon('comment', height: 16, class: 'mb-1')
+    = link_to ' add comment', '', id: 'question-comment', style: 'text-decoration: none;', remote: true
+.question-edit-errors.text-danger.pt-3
+

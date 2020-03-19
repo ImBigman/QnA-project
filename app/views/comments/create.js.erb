@@ -1,0 +1,11 @@
+$('.'+"<%= @comment.commentable.class.name.underscore %>"+'-comment-errors').html('<%= render 'shared/errors', resource: @comment %>');
+
+var sharedSelector = "<%= @comment.commentable.class.name.underscore %>"+"_id_"+"<%= @comment.commentable.id %>"
+
+<% if @comment.persisted? %>
+  $('.'+ sharedSelector +' .'+ "<%= @comment.commentable.class.name.underscore %>" +'-comments').append('<%= j render @comment %>');
+  $('.'+ sharedSelector +' .comment-block').hide();
+  $('.'+ sharedSelector +' .empty').hide();
+  $('.'+ sharedSelector +' .comment-button').show();
+  $('.'+ sharedSelector +' a#'+"<%= @comment.commentable.class.name.underscore %>"+'-comment').show();
+<% end %>

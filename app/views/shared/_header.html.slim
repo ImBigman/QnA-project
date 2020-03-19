@@ -6,6 +6,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
     - if user_signed_in?
       =current_user.email
       |&nbsp;
+      -if current_user.rewards.present?
+        =link_to 'Rewards', rewards_path, class:"nav-item nav-link"
       =link_to 'Sign out', destroy_user_session_path, method: :delete,  class:"nav-item nav-link"
     - else
       =link_to 'Sign in', new_user_session_path,  class:"nav-item nav-link"

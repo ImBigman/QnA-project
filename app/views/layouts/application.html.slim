@@ -7,6 +7,10 @@ html
       | Qna
     = csrf_meta_tags
     = csp_meta_tag
+
+    = Gon::Base.render_data
+    = action_cable_meta_tag
+
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
@@ -14,10 +18,8 @@ html
     div class="wrapper"
       div class="container"
         div class="content"
-          p.notice
-            = notice
-          p.alert
-            = alert
+        br
+          =flash_header
           = yield
 
     script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"

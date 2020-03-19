@@ -1,1 +1,17 @@
-=render 'questions/form'
+.question-errors.text-danger
+  = render 'shared/errors', resource: question
+
+= simple_form_for question, local: true do |f|
+  = f.input :title, input_html: { class: "col-md-8"}
+  = f.input :body, input_html: { class: "col-md-8"}
+  = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control-file btn-sm btn-default btn-file mr-3 mb-2'
+
+  = f.simple_fields_for :links do |links|
+    = render 'links/fields', f: links
+  .links
+    = link_to_add_association octicon('plus-small', height: 32, class: 'text-success'), f, :links,  partial: 'links/fields'
+  br
+  = f.simple_fields_for :reward do |reward|
+    = reward.input :name, label: 'Reward title', input_html: { class: "col-md-8"}
+    = reward.file_field :image, direct_upload: true, class: 'form-control-file btn-sm btn-default btn-file mr-3 mb-2'
+  = f.submit 'Save a question', class: 'btn btn-outline-primary'

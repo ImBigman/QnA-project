@@ -1,21 +1,45 @@
-.flash {
-  text-align: center;
-  color: brown;
+
+.alert-error {
   padding: 11px;
+  border-radius: 5px;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
+  text-align: center;
 }
 
-.flash.alert {
-border-color: brown;
+.alert-alert {
+  padding: 11px;
+  border-radius: 5px;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
+  text-align: center;
 }
 
-.notice {
-  text-align: center;
-  color: green;
+.alert {
   padding: 11px;
+  border-radius: 5px;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+  color: #b94a48;
+  text-align: center;
 }
 
-.hello {
-  text-align: center;
-  color: dodgerblue;
+.alert-success {
   padding: 11px;
+  border-radius: 5px;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #468847;
+  text-align: center;
+}
+
+.alert-notice {
+  padding: 11px;
+  border-radius: 5px;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #468847;
+  text-align: center;
 }

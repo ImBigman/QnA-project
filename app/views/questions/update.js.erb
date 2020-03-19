@@ -1,0 +1,11 @@
+$('.question-edit-errors').html('<%= render 'shared/errors', resource: @question %>');
+
+<% if question.errors.blank? %>
+$('.question').html('<%= j render 'questions/body' %>');
+var form = $('.question-edit-form')
+form.html('<% j render 'questions/edit_form' %>');
+form.hide()
+$('#question-edit').show()
+location.reload();
+<% end %>
+

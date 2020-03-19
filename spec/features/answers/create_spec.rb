@@ -7,6 +7,7 @@ feature 'User can create answer of the question', %q(
 ) do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
+  given(:question1) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -15,27 +16,88 @@ feature 'User can create answer of the question', %q(
       visit question_path(question)
     end
 
-    scenario 'write a answer' do
-      fill_in 'answer[body]', with: 'This is test answer for some question'
-      click_on 'Add a answer'
+    describe 'write' do
+      background { fill_in 'answer[body]', with: 'This is test answer for some question' }
 
-      expect(page).to have_content 'Your answer has been successfully added.'
-      expect(page).to have_content 'This is test answer for some question'
-      expect(current_path).to eq question_path(question)
+      scenario 'a answer', js: true do
+        click_on 'Add a answer'
+
+        within('.answers') { expect(page).to have_text('This is test answer for some question') }
+
+        expect(current_path).to eq question_path(question)
+      end
+
+      scenario 'a answer with attached files', js: true do
+        attach_file 'answer[files][]', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb" ]
+        click_on 'Add a answer'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
     end
 
-    scenario 'write a answer with errors' do
+    scenario 'write a answer with errors', js: true do
       click_on 'Add a answer'
 
       expect(page).to have_content "Body can't be blank"
-      expect(current_path).to eq question_answers_path(question)
+      expect(current_path).to eq question_path(question)
     end
   end
 
   scenario 'Unauthenticated user try write a answer ' do
     visit question_path(question)
-    click_on 'Add a answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_link('Add a answer', href: '')
+  end
+
+  describe 'multiple sessions' do
+    scenario "answer appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: 'This is test answer for some question'
+        click_on 'Add a answer'
+
+        expect(page).to have_content 'This is test answer for some question'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'This is test answer for some question'
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question1)
+        expect(page).to_not have_content 'This is test answer for some question'
+      end
+    end
+
+    scenario "answer do not appears on another question's page", js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question1)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: 'This is test answer for some question'
+        click_on 'Add a answer'
+
+        expect(page).to have_content 'This is test answer for some question'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to_not have_content 'This is test answer for some question'
+      end
+    end
   end
 end

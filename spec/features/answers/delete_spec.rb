@@ -1,4 +1,3 @@
-# TODO delete a answer
 require 'rails_helper'
 
 feature 'Author can delete a answer', %q(
@@ -11,14 +10,13 @@ feature 'Author can delete a answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user' do
-    scenario 'delete a question as author' do
+    scenario 'delete a question as author', js: true do
       sign_in(user)
       visit question_path(question)
       expect(page).to have_content answer.body
 
       page.find('#answer_delete').click
-
-      expect(page).to have_content 'Your answer successfully deleted.'
+      page.driver.browser.switch_to.alert.accept
       expect(page).to_not have_content answer.body
     end
 
@@ -32,7 +30,7 @@ feature 'Author can delete a answer', %q(
   end
 
   describe 'Guest' do
-    scenario 'have no ' do
+    scenario 'cannot delete the answer' do
       visit question_path(question)
       expect(page).to have_content "from: #{user.email}"
       expect(page).to have_content question.title

@@ -1,37 +1,29 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index]
+  after_action :publish_answer, only: %i[create]
 
-  def show; end
+  include Voted
 
-  def new; end
-
-  def edit; end
+  def index
+    question.answers
+  end
 
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to @answer.question, notice: 'Your answer has been successfully added.'
-    else
-      render 'questions/show'
-    end
+    @answer.save
   end
 
   def update
-    if answer.update(answer_params)
-      redirect_to @answer.question, notice: 'Your answer successful updated!'
-    else
-      render :edit, alert: 'Your answer has not been saved!'
-    end
+    answer.update(answer_params) if current_user.owner?(answer)
   end
 
   def destroy
-    if current_user.owner?(answer)
-      answer.destroy
-      redirect_to answer.question, notice: 'Your answer successfully deleted.'
-    else
-      redirect_to answer.question, alert: "You can't delete not your answer!"
-    end
+    answer.destroy if current_user.owner?(answer)
+  end
+
+  def make_better
+    answer.up_to_best! if current_user.owner?(answer.question)
   end
 
   private
@@ -44,10 +36,22 @@ class AnswersController < ApplicationController
     @question ||= Question.find(params[:question_id])
   end
 
+  def publish_answer
+    return if answer.errors.any?
+
+    ActionCable.server.broadcast("answers_for_question_#{question.id}",
+                                 author: answer.user.email,
+                                 rating: answer.rating,
+                                 answer: answer,
+                                 links: answer.links)
+  end
+
   helper_method :question
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:body, :author_id)
+    params.require(:answer).permit(:body, :author_id,
+                                   files: [],
+                                   links_attributes: %i[id name url _destroy])
   end
 end
