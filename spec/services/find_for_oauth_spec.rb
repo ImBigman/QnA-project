@@ -20,7 +20,7 @@ RSpec.describe FindForOauthService do
       end
 
       it 'does not create authorization for user' do
-        expect { subject.call }.to_not change(user.authorizations, :count)
+        expect { subject.call }.to_not change(Authorization, :count)
       end
     end
 
