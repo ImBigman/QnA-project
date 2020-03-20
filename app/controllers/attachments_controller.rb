@@ -1,20 +1,15 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_attachment, only: :destroy
 
   def destroy
-    if current_user.owner?(attachment.record)
-      attachment.purge_later
-    else
-      flash[:alert] = 'Not enough permission: for delete'
-    end
+    authorize! :destroy, @attachment
+    @attachment.purge_later if current_user.owner?(@attachment.record)
   end
 
   private
 
-  def attachment
-    @attachment ||= ActiveStorage::Attachment.find(params[:id])
+  def set_attachment
+    @attachment = ActiveStorage::Attachment.find(params[:id])
   end
-
-  helper_method :attachment
-
 end

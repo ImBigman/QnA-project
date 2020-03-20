@@ -26,12 +26,10 @@ module Voted
   end
 
   def vote(number)
-    if current_user.owner?(@votable)
-      render json: { type: votable_type(@votable), error: 'You cannot vote for yourself' }, status: 422
-    else
-      @votable.votes.create(score: number, user: current_user)
-      render json: { id: @votable.id, type: votable_type(@votable), rating: @votable.rating }
-    end
+    return if current_user.owner?(@votable)
+
+    @votable.votes.create(score: number, user: current_user)
+    render json: { id: @votable.id, type: votable_type(@votable), rating: @votable.rating }
   end
 
   def votable_type(obj)
