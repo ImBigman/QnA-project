@@ -6,10 +6,12 @@ module Voted
   end
 
   def positive_vote
+    authorize! :positive_vote, @votable
     vote(1) if acceptance_score <= 0
   end
 
   def negative_vote
+    authorize! :negative_vote, @votable
     vote(-1) if acceptance_score >= 0
   end
 
