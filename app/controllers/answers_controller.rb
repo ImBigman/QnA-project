@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
 
   include Voted
 
+  authorize_resource
+
   def index
     question.answers
   end

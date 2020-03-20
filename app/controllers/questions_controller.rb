@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
 
   include Voted
 
+  authorize_resource
+
   def index
     @questions = Question.order(:created_at)
   end
