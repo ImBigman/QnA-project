@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AttachmentsController, type: :controller do
   let(:user) { create(:user) }
   let(:user1) { create(:user) }
-  let(:question) { create :question, :with_files, user: user }
+  let!(:question) { create :question, :with_files, user: user }
 
   describe 'DELETE #destroy' do
     context 'As an author' do
@@ -29,12 +29,14 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'get flash alert message' do
         delete :destroy, params: { id: question.files.first.id, format: :js }
-        expect(flash[:alert]).to eq 'Not enough permission: for delete'
+        expect(flash[:alert]).to eq 'You are not authorized to access this page.'
       end
 
-      it 'render destroy view' do
+      it 'redirect to root path' do
         delete :destroy, params: { id: question.files.first.id, format: :js }
-        expect(response).to render_template :destroy
+
+        expect(response.status).to eq 302
+        expect(response).to redirect_to root_path
       end
     end
 

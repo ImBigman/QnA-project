@@ -62,12 +62,12 @@ shared_examples 'voted' do
         expect(votable.rating).to eq(0)
       end
 
-      it 'render JSON response' do
+      it 'redirect to root path' do
         patch :positive_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(response.status).to eq(422)
-        expect(response.body).to have_content('You cannot vote for yourself')
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to '/'
       end
     end
 
@@ -143,12 +143,12 @@ shared_examples 'voted' do
         expect(votable.rating).to eq(0)
       end
 
-      it 'render JSON response' do
+      it 'redirect to root path' do
         patch :negative_vote, params: { id: votable, format: :json }
         votable.reload
 
-        expect(response.status).to eq(422)
-        expect(response.body).to have_content('You cannot vote for yourself')
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to '/'
       end
     end
 
