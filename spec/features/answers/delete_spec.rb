@@ -10,7 +10,7 @@ feature 'Author can delete a answer', %q(
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user' do
-    scenario 'delete a question as author', js: true do
+    scenario 'delete a answer as author', js: true do
       sign_in(user)
       visit question_path(question)
       expect(page).to have_content answer.body
