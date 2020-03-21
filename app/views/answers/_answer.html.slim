@@ -4,7 +4,7 @@
       =render 'shared/vote_selector', resource: answer
       span.col-11.my-auto style ="padding-left: 0px;"
         span.best-block
-          - if current_user&.owner?(answer.question)
+          - if can? :make_better, answer
             - if answer.best?
               = link_to 'Best', make_better_answer_path(answer), method: :put, class: 'btn-sm btn-success text-light mt-3 mr-2', remote: true, id: 'answer-best'
             -else
