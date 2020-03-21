@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
 
   include Voted
 
+  authorize_resource
+
   def index
     @questions = Question.order(:created_at)
   end
@@ -32,16 +34,13 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    question.update(question_params) if current_user.owner?(question)
+    authorize! :update, question
+    question.update(question_params)
   end
 
   def destroy
-    if current_user.owner?(question)
-      question.destroy
-      redirect_to questions_path, notice: "Your question '#{question.title[0..-2]}' successfully deleted."
-    else
-      redirect_to @question, alert: "You can't delete not your question!"
-    end
+    authorize! :destroy, question
+    redirect_to questions_path, notice: "Your question '#{question.title[0..-2]}' successfully deleted." if question.destroy
   end
 
   private

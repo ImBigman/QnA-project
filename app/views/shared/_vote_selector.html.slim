@@ -1,6 +1,6 @@
 span.col-1.vote-block style ="padding-right: 0px;"
   .row
-    -if current_user.nil? || current_user.owner?(resource)
+    -if cannot? :positive_vote, resource
       span.mx-auto =octicon("triangle-up", height: 24, class: 'text-muted', id: 'for-disabled')
     - else
       span.mx-auto = link_to octicon("triangle-up", height: 24, class: 'text-success'),
@@ -10,7 +10,7 @@ span.col-1.vote-block style ="padding-right: 0px;"
   .row
     span.mx-auto id="vote-score" = resource.rating
   .row
-    -if current_user.nil? || current_user.owner?(resource)
+    -if cannot? :negative_vote, resource
       span.mx-auto =octicon("triangle-down", height: 24, class: 'text-muted', id: 'against-disabled')
     -else
       span.mx-auto = link_to octicon("triangle-down", height: 24, class: 'text-danger'),

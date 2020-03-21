@@ -29,12 +29,12 @@ RSpec.describe LinksController, type: :controller do
 
       it 'get flash alert message' do
         delete :destroy, params: { id: question.links.first.id, format: :js }
-        expect(flash[:alert]).to eq 'Not enough permission: for delete'
+        expect(flash[:alert]).to eq 'You are not authorized to access this page.'
       end
 
-      it 'render destroy view' do
+      it 'redirect to root path' do
         delete :destroy, params: { id: question.links.first.id, format: :js }
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 

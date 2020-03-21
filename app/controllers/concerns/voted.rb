@@ -6,10 +6,12 @@ module Voted
   end
 
   def positive_vote
+    authorize! :positive_vote, @votable
     vote(1) if acceptance_score <= 0
   end
 
   def negative_vote
+    authorize! :negative_vote, @votable
     vote(-1) if acceptance_score >= 0
   end
 
@@ -24,12 +26,8 @@ module Voted
   end
 
   def vote(number)
-    if current_user.owner?(@votable)
-      render json: { type: votable_type(@votable), error: 'You cannot vote for yourself' }, status: 422
-    else
-      @votable.votes.create(score: number, user: current_user)
-      render json: { id: @votable.id, type: votable_type(@votable), rating: @votable.rating }
-    end
+    @votable.votes.create(score: number, user: current_user)
+    render json: { id: @votable.id, type: votable_type(@votable), rating: @votable.rating }
   end
 
   def votable_type(obj)

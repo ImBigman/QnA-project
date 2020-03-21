@@ -1,14 +1,16 @@
 class LinksController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_link, only: :destroy
+
+  authorize_resource
 
   def destroy
-    @link = Link.find(params[:id])
-    resource = @link.linkable
+    @link.destroy
+  end
 
-    if current_user.owner?(resource)
-      @link.destroy
-    else
-      flash[:alert] = 'Not enough permission: for delete'
-    end
+  private
+
+  def set_link
+    @link = Link.find(params[:id])
   end
 end

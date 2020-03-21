@@ -1,6 +1,6 @@
 span class='answer_id_#{answer.id}_body'
   = answer.body
-  - if current_user&.owner?(answer)
+  - if can? :update, answer
     span style='font-size: 8pt'
       |&nbsp;
       = link_to 'Edit', '', class: 'btn-sm btn-outline-info mt-3 answer-edit', data: { answer_id: answer.id }
@@ -33,7 +33,7 @@ span class='answer_id_#{answer.id}_body'
       = content_tag(:span, class: 'text-primary comment-button', style: 'font-size: 8pt')
         = octicon('comment', height: 16, class: 'mb-1')
         = link_to ' add comment', '', id: 'answer-comment', style: 'text-decoration: none;', remote: true, data: { answer_id: answer.id }
-  - if current_user&.owner?(answer)
+  - if can? :update, answer
     span class ="edit-answer-#{answer.id} hidden"
       = simple_form_for answer, class: 'hidden ml-1',  remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
         = f.text_area :body, style: 'width: 60%'

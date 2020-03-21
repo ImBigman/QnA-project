@@ -15,7 +15,7 @@ span =question.user.email
   span.question-files
     =render 'attachments/attachment', resource: question
 br
-- if current_user&.owner?(question)
+- if can? :update, question
   -if question.reward.present?
     span.question-reward
       strong question reward:&nbsp;
