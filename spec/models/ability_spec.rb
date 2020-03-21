@@ -34,41 +34,38 @@ describe 'Ability' do
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
 
-    describe 'make_better' do
-      it { should be_able_to :make_better, answer }
-      it { should_not be_able_to :make_better, answer1 }
-    end
 
-    describe 'create' do
-      it { should be_able_to :create, Question }
+    describe 'answer' do
       it { should be_able_to :create, Answer }
-      it { should be_able_to :create, Comment }
-      it { should be_able_to :create, Reward }
-    end
-
-    describe 'update' do
-      it { should be_able_to :update, question }
-      it { should_not be_able_to :update, question1 }
 
       it { should be_able_to :update, answer }
       it { should_not be_able_to :update, answer1 }
 
-      it { should be_able_to :update, comment }
-      it { should_not be_able_to :update, comment1 }
-    end
-
-    describe 'destroy' do
-      it { should be_able_to :destroy, question }
-      it { should_not be_able_to :destroy, question1 }
-
       it { should be_able_to :destroy, answer }
       it { should_not be_able_to :destroy, answer1 }
 
-      it { should be_able_to :destroy, comment }
-      it { should_not be_able_to :destroy, comment1 }
-
       it { should be_able_to :destroy, answer.files.first }
       it { should_not be_able_to :destroy, answer1.files.first }
+
+      it { should be_able_to :destroy, build(:link, linkable: answer) }
+      it { should_not be_able_to :destroy, build(:link, linkable: answer1) }
+
+      it { should be_able_to :make_better, answer }
+      it { should_not be_able_to :make_better, answer1 }
+
+      it { should be_able_to %i[positive_vote negative_vote], answer1 }
+      it { should_not be_able_to %i[positive_vote negative_vote], answer }
+    end
+
+    describe 'question' do
+      it { should be_able_to :create, Question }
+      it { should be_able_to :create, Reward }
+
+      it { should be_able_to :update, question }
+      it { should_not be_able_to :update, question1 }
+
+      it { should be_able_to :destroy, question }
+      it { should_not be_able_to :destroy, question1 }
 
       it { should be_able_to :destroy, question.files.first }
       it { should_not be_able_to :destroy, question1.files.first }
@@ -76,16 +73,18 @@ describe 'Ability' do
       it { should be_able_to :destroy, build(:link, linkable: question) }
       it { should_not be_able_to :destroy, build(:link, linkable: question1) }
 
-      it { should be_able_to :destroy, build(:link, linkable: answer) }
-      it { should_not be_able_to :destroy, build(:link, linkable: answer1) }
-    end
-
-    describe 'vote' do
-      it { should be_able_to %i[positive_vote negative_vote], answer1 }
-      it { should_not be_able_to %i[positive_vote negative_vote], answer }
-
       it { should be_able_to %i[positive_vote negative_vote], question1 }
       it { should_not be_able_to %i[positive_vote negative_vote], question }
+    end
+
+    describe 'comment' do
+      it { should be_able_to :create, Comment }
+
+      it { should be_able_to :update, comment }
+      it { should_not be_able_to :update, comment1 }
+
+      it { should be_able_to :destroy, comment }
+      it { should_not be_able_to :destroy, comment1 }
     end
   end
 end
