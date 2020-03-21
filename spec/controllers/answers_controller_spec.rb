@@ -111,9 +111,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to_not eq 'new body for answer'
       end
 
-      it 're-render edit view' do
+      it 'redirect to root path' do
         patch(:update, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js)
-        expect(response).to render_template :update
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -144,10 +144,10 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer, format: :js } }.not_to change(question.answers, :count)
       end
 
-      it 'render destroy view' do
+      it 'redirect to root path' do
         delete :destroy, params: { id: answer, format: :js }
 
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
 

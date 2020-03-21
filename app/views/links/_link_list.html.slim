@@ -3,7 +3,7 @@
     - if link.gist?
       = link_to link.name, link.url
       |&nbsp;
-      - if current_user&.owner?(resource)
+      - if can? :update, resource
         = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'
       br
       = javascript_link_tag(link)
@@ -11,5 +11,5 @@
       br
       = link_to link.name, link.url
       |&nbsp;
-      - if current_user&.owner?(resource)
+      - if can? :update, resource
         = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'

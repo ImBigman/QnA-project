@@ -174,9 +174,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq 'new body for'
       end
 
-      it 'renders edit view' do
+      it 'redirect to root path' do
         patch :update, params: { id: question, question: attributes_for(:question, user: user), format: :js }
-        expect(response).to render_template :update
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -229,7 +229,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'get flash alert message' do
         delete :destroy, params: { id: question }
-        expect(flash[:alert]).to eq "You can't delete not your question!"
+        expect(flash[:alert]).to eq 'You are not authorized to access this page.'
       end
     end
 
