@@ -18,10 +18,6 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_many :authorizations, dependent: :destroy
 
-  def owner?(resource)
-    resource.user_id == id
-  end
-
   def self.find_for_oauth(auth)
     FindForOauthService.new(auth).call
   end
