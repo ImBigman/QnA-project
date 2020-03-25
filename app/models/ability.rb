@@ -21,6 +21,8 @@ class Ability
 
   def user_abilities
     guest_abilities
+    can :me, User, id: user.id
+    can :other_users, User, id: user.id
     can :make_better, Answer, question: { user_id: user.id }
     can :create, [Answer, Question, Comment, Reward]
     can %i[update destroy], [Answer, Question, Comment], user_id: user.id
