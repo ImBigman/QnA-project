@@ -86,5 +86,15 @@ describe 'Ability' do
       it { should be_able_to :destroy, comment }
       it { should_not be_able_to :destroy, comment1 }
     end
+
+    context 'me' do
+      it { should be_able_to :me, user, user: user }
+      it { should_not be_able_to :me, user1, user: user }
+    end
+
+    context 'other_users' do
+      it { should be_able_to :other_users, user, user: user }
+      it { should_not be_able_to :other_users, user1, user: user }
+    end
   end
 end
