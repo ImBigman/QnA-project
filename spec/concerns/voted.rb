@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-shared_examples 'voted' do
+shared_examples_for 'voted' do
   let(:user) { create(:user) }
   let(:user1) { create(:user) }
   let(:controller) { described_class }
