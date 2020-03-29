@@ -44,8 +44,11 @@ gem 'omniauth', '~> 1.6', '>= 1.6.1'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
 gem 'popper_js', '~> 1.16'
+gem 'sidekiq'
+gem 'sinatra', require: false
 gem 'slim-rails'
 gem 'simple_form'
+gem 'whenever', require: false
 
 
 group :development, :test do
