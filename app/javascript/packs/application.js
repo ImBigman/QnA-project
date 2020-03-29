@@ -13,6 +13,7 @@ require("../scripts/question");
 require("../scripts/best_answer");
 require("../scripts/votes");
 require("../scripts/direct_uploads");
+require("../scripts/subscription");
 require("popper.js");
 
 // Uncomment to copy all static images under ../images to the output folder and reference

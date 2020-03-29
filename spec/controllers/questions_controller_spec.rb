@@ -90,6 +90,12 @@ RSpec.describe QuestionsController, type: :controller do
             post :create, params: { question: attributes_for(:question, user: user) }
           end.to broadcast_to('questions').with(a_hash_including(action: 'create'))
         end
+
+        it 'create subscription for author' do
+          expect do
+            post :create, params: { question: attributes_for(:question, user: user) }
+          end.to change(Subscription, :count).by(1)
+        end
       end
 
       context 'with invalid attributes' do
@@ -106,6 +112,12 @@ RSpec.describe QuestionsController, type: :controller do
           expect do
             post :create, params: { question: attributes_for(:question, :invalid) }
           end.to_not broadcast_to('questions')
+        end
+
+        it 'do not create subscription for author' do
+          expect do
+            post :create, params: { question: attributes_for(:question, :invalid, user: user) }
+          end.to_not change(Subscription, :count)
         end
       end
     end

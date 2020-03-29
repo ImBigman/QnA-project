@@ -27,6 +27,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.build(question_params)
     if @question.save
+      current_user.subscriptions.create(question_id: @question.id)
       redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new, alert: 'Your question has not been saved! '
