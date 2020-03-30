@@ -6,6 +6,7 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :comments, dependent: :destroy, as: :commentable
   has_many :subscriptions, dependent: :destroy
+  has_many :users, through: :subscriptions, dependent: :destroy
   has_one :reward, dependent: :destroy
   belongs_to :user
 
@@ -13,11 +14,19 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true, length: { minimum: 10 }
 
-  def subscriptions?(user)
-    Subscription.where("question_id = #{id} and user_id = ?", user.id).exists?
+  after_create :create_subscription
+
+  def subscribed?(user)
+    subscriptions.exists?(user: user)
   end
 
-  def sub(user)
-    Subscription.where("question_id = #{id} and user_id = ?", user.id).map(&:id).first
+  def subscription(user)
+    subscriptions.find_by(user: user)
+  end
+
+  private
+
+  def create_subscription
+    Subscription.create(question_id: id, user_id: user.id)
   end
 end

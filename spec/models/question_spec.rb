@@ -4,6 +4,7 @@ RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
   it { should have_many(:subscriptions).dependent(:destroy) }
+  it { should have_many(:users).through(:subscriptions).dependent(:destroy) }
   it { should have_one(:reward).dependent(:destroy) }
   it { should belong_to(:user) }
 
@@ -18,15 +19,19 @@ RSpec.describe Question, type: :model do
 
   describe 'question subscriptions' do
     let(:user) { create(:user) }
+    let(:user1) { create(:user) }
     let(:question) { create(:question, user: user) }
-    let!(:subscription) { create(:subscription, user_id: user.id, question_id: question.id) }
 
-    it '#subscriptions?(user)' do
-      expect(question).to be_subscriptions(user)
+    it '#subscribed?(user) returns true' do
+      expect(question).to be_subscribed(user)
     end
 
-    it '#sub(user)' do
-      expect(question.sub(user)).to eq subscription.id
+    it '#subscribed?(user) returns false' do
+      expect(question).to_not be_subscribed(user1)
+    end
+
+    it '#subscription(user)' do
+      expect(question.subscription(user)).to eq question.subscriptions.first
     end
   end
 end

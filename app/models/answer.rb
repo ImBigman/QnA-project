@@ -12,11 +12,19 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true, length: { minimum: 10 }
 
+  after_create :send_email
+
   def up_to_best!
     Answer.transaction do
       question.answers.update_all(best: false)
       update!(best: true)
       question.reward&.update!(user: user)
     end
+  end
+
+  private
+
+  def send_email
+    AnswersSubscriptionsJob.perform_later(question, self) if question.subscriptions.exists?
   end
 end

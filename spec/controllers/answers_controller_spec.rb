@@ -1,7 +1,8 @@
 require 'rails_helper'
-include ActiveJob::TestHelper
 
 RSpec.describe AnswersController, type: :controller do
+  include ActiveJob::TestHelper
+
   let(:user) { create(:user) }
   let(:user1) { create(:user) }
   let(:question) { create :question, user: user }
@@ -26,14 +27,13 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'do not create job without subscribers' do
           clear_enqueued_jobs
+          question.subscriptions.delete_all
           post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
 
           expect(enqueued_jobs.size).to eq(0)
         end
 
         describe 'with subscriber' do
-          let!(:subscription) { create :subscription, question: question, user: user }
-
           it 'create email sender job' do
             clear_enqueued_jobs
             post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }

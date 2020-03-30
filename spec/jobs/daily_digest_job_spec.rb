@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe DailyDigestJob, type: :job do
-
   let(:service) { double('DailyDigestService') }
 
   before do
