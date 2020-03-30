@@ -13,10 +13,7 @@ class AnswersController < ApplicationController
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
-
-    if @answer.save
-      AnswersSubscriptionsJob.perform_later(question, @answer) if question.subscriptions.exists?
-    end
+    @answer.save
   end
 
   def update

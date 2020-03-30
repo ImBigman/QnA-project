@@ -6,9 +6,8 @@ class DailyDigestService
   end
 
   def send_new_answers(question, answer)
-    @subscribers = question.subscriptions.map(&:user_id)
-    User.find_each do |user|
-      DailyDigestMailer.answers(user, answer).deliver_later if @subscribers.include?(user.id)
+    question.subscriptions.find_each do |subscription|
+      DailyDigestMailer.answers(subscription.user, answer).deliver_later
     end
   end
 end

@@ -4,12 +4,12 @@ feature 'User can subscribe to question.', %q(
 "In order to get the latest community response
  I'd like to be able to subscribe to the question."
 ) do
-  given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given(:users) { create_list(:user, 2) }
+  given(:question) { create(:question, user: users.first) }
 
   describe 'Authenticated user' do
     background do
-      sign_in(user)
+      sign_in(users.last)
       visit question_path(question)
     end
 
