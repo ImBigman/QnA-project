@@ -6,8 +6,8 @@ class DailyDigestService
   end
 
   def send_new_answers(question, answer)
-    question.subscriptions.find_each do |subscription|
-      DailyDigestMailer.answers(subscription.user, answer).deliver_later
+    question.subscribers.find_each do |subscriber|
+      DailyDigestMailer.answers(subscriber, answer).deliver_later
     end
   end
 end

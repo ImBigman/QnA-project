@@ -11,8 +11,8 @@ RSpec.describe DailyDigestService do
   end
 
   it 'sends email to all question subscribers' do
-    question.subscriptions.each do |subscription|
-      expect(DailyDigestMailer).to receive(:answers).with(subscription.user, answer).and_call_original
+    question.subscribers.each do |subscriber|
+      expect(DailyDigestMailer).to receive(:answers).with(subscriber, answer).and_call_original
     end
 
     subject.send_new_answers(question, answer)

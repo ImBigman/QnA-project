@@ -6,7 +6,7 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :comments, dependent: :destroy, as: :commentable
   has_many :subscriptions, dependent: :destroy
-  has_many :users, through: :subscriptions, dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :user, dependent: :destroy
   has_one :reward, dependent: :destroy
   belongs_to :user
 
@@ -27,6 +27,6 @@ class Question < ApplicationRecord
   private
 
   def create_subscription
-    Subscription.create(question_id: id, user_id: user.id)
+    subscriptions.create(user_id: user_id)
   end
 end
