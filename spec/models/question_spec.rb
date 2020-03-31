@@ -4,7 +4,7 @@ RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
   it { should have_many(:subscriptions).dependent(:destroy) }
-  it { should have_many(:users).through(:subscriptions).dependent(:destroy) }
+  it { should have_many(:subscribers).through(:subscriptions).dependent(:destroy) }
   it { should have_one(:reward).dependent(:destroy) }
   it { should belong_to(:user) }
 
