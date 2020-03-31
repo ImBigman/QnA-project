@@ -30,6 +30,8 @@ describe 'Ability' do
     let(:answer1) { create(:answer, :with_files, question: question1, user: user1) }
     let(:comment) { create(:comment, commentable: question, user: user) }
     let(:comment1) { create(:comment, commentable: question, user: user1) }
+    let(:subscription) { create(:subscription, question: question, user: user) }
+    let(:subscription1) { create(:subscription, question: question, user: user1) }
 
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
@@ -85,6 +87,13 @@ describe 'Ability' do
 
       it { should be_able_to :destroy, comment }
       it { should_not be_able_to :destroy, comment1 }
+    end
+
+    describe 'subscription' do
+      it { should be_able_to :create, Subscription }
+
+      it { should be_able_to :destroy, subscription }
+      it { should_not be_able_to :destroy, subscription1 }
     end
 
     context 'me' do

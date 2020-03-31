@@ -9,6 +9,7 @@
           =render 'questions/body'
   .col-6.pt-2.question-edit-form.hidden
     =render 'questions/edit_form'
+=render 'subscriptions/subscription', question: question
 br
 -unless question.answers.empty?
   span.col-1

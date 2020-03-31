@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  include ActiveJob::TestHelper
+
   let(:user) { create(:user) }
   let(:user1) { create(:user) }
   let(:question) { create :question, user: user }
@@ -23,6 +25,30 @@ RSpec.describe AnswersController, type: :controller do
           expect(assigns(:answer).user).to eq user
         end
 
+        it 'do not create job without subscribers' do
+          clear_enqueued_jobs
+          question.subscriptions.delete_all
+          post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
+
+          expect(enqueued_jobs.size).to eq(0)
+        end
+
+        describe 'with subscriber' do
+          it 'create email sender job' do
+            clear_enqueued_jobs
+            post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
+
+            expect(enqueued_jobs.size).to eq(1)
+          end
+
+          it 'create correct job' do
+            clear_enqueued_jobs
+            expect do
+              post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
+            end.to have_enqueued_job(AnswersSubscriptionsJob)
+          end
+        end
+
         it 'streaming to channel' do
           expect do
             post :create, params: { question_id: question, user: user, answer: attributes_for(:answer), format: :js }
@@ -40,6 +66,13 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to render_template :create
         end
 
+        it 'do not create email sender job' do
+          clear_enqueued_jobs
+          post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid), format: :js }
+
+          expect(enqueued_jobs.size).to eq(0)
+        end
+
         it 'do not streaming to channel' do
           expect do
             post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid), format: :js }
@@ -51,6 +84,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'As guest' do
       it 'does not save the answer' do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to_not change(question.answers, :count)
+      end
+
+      it 'do not create email sender job' do
+        clear_enqueued_jobs
+        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
+
+        expect(enqueued_jobs.size).to eq(0)
       end
 
       it 'redirected to sign in page' do

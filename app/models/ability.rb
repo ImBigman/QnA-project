@@ -24,8 +24,8 @@ class Ability
     can :me, User, id: user.id
     can :other_users, User, id: user.id
     can :make_better, Answer, question: { user_id: user.id }
-    can :create, [Answer, Question, Comment, Reward]
-    can %i[update destroy], [Answer, Question, Comment], user_id: user.id
+    can :create, [Answer, Question, Comment, Reward, Subscription]
+    can %i[update destroy], [Answer, Question, Comment, Subscription], user_id: user.id
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
     can :destroy, Link, linkable: { user_id: user.id }
     can %i[positive_vote negative_vote], [Answer, Question] do |resource|

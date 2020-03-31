@@ -1,0 +1,8 @@
+.subscriptions
+  -if current_user.nil?
+    = content_tag(:span, octicon("bookmark", height: 48, class: 'text-muted float-right', id: 'mark-disabled'), '')
+  -else
+    -if question.subscribed?(current_user)
+      = link_to(octicon("bookmark", height: 48, class: 'text-warning float-right', id: 'mark-enabled'), subscription_path(question.subscription(current_user)), method: :delete, data: {confirm: 'Are you sure?'}, remote: true)
+    -else
+      = link_to(octicon("bookmark", height: 48, class: 'text-muted float-right', id: 'mark-disabled'), question_subscriptions_path(question), method: :post, remote: true)
