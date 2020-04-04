@@ -1,0 +1,15 @@
+= simple_form_for :search, html: { novalidate: true, class: "no-bs-validation" }, remote: :true, method: :post do |f|
+  .form-row.ml-5
+    .col
+      .input-group
+        .input-group-prepend.mt-1
+          = octicon("search", height: 30, class: 'text-primary')
+        .col-2
+          = f.input :scope, collection: %w(questions answers comments users global), selected: 'global', label: false, required: false
+        .col-9
+          .row
+            .col-10
+              = f.input :body, placeholder: 'Search request', label: false , required: false
+            .col-2
+              = f.submit 'Search', class: 'btn btn-primary mb-4', id: 'search-button', remote: :true
+

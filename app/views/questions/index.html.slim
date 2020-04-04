@@ -1,8 +1,8 @@
-p= link_to 'Ask question', new_question_path, class:"btn btn-outline-primary"
-
+.row
+  .col-md-12
+    p= link_to 'Ask question', new_question_path, class:"btn btn-primary float-md-right"
 table.questions class="table mt-3"
   tr.row
     th.col-12
       |Questions:
-
     = render @questions
