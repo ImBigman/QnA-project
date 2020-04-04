@@ -21,8 +21,10 @@
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
+arc-data-export-29-3-2020.json
 /config/master.key
-
+/config/*.sphinx.conf
+db/sphinx
 /public/packs
 /public/packs-test
 /node_modules
