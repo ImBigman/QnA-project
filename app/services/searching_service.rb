@@ -9,9 +9,9 @@ class SearchingService
   def call
     @request = @query.split(/'([^']+)'|"([^"]+)"|\s+|\+/).reject(&:empty?).map(&:inspect)
     @result = if @scope == 'Global'
-                ThinkingSphinx.search @request.to_s
+                ThinkingSphinx.search ThinkingSphinx::Query.escape(@request.to_s)
               else
-                @scope.singularize.constantize.search @request.to_s
+                @scope.singularize.constantize.search ThinkingSphinx::Query.escape(@request.to_s)
               end
   end
 end
