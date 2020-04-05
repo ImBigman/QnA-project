@@ -7,7 +7,7 @@ RSpec.describe SearchingService do
   let(:request) { params['body'].split(/'([^']+)'|"([^"]+)"|\s+|\+/).reject(&:empty?).map(&:inspect) }
 
   it 'search for a specific resource' do
-    expect(params['scope'].capitalize.singularize.constantize).to receive(:search).with(request.to_s).and_call_original
+    expect(params['scope'].capitalize.singularize.constantize).to receive(:search).with(ThinkingSphinx::Query.escape(request.to_s)).and_call_original
 
     service.call
   end
@@ -17,7 +17,7 @@ RSpec.describe SearchingService do
     let(:request1) { params1['body'].split(/'([^']+)'|"([^"]+)"|\s+|\+/).reject(&:empty?).map(&:inspect) }
 
     it 'search with global scope' do
-      expect(ThinkingSphinx).to receive(:search).with(request1.to_s).and_call_original
+      expect(ThinkingSphinx).to receive(:search).with(ThinkingSphinx::Query.escape(request1.to_s)).and_call_original
 
       service.call
     end
