@@ -1,3 +1,13 @@
 .hidden {
   display: none;
 }
+.no-bs-validation {
+  .is-valid, .is-invalid {
+    border-color: #d4d4d4;
+    background-image: inherit;
+    &:focus {
+      border-color: inherit;
+      box-shadow: 0 0 0 .1rem #88b9ff;
+    }
+  }
+}

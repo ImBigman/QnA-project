@@ -2,15 +2,16 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
   =link_to 'Welcome to QnA!', questions_path, class:"btn btn-primary text-light"
   |&nbsp;
   #navbarNavAltMarkup.collapse.navbar-collapse
-    .navbar-nav.font-weight-bolder.text-uppercase.h5
+    .navbar-nav.font-weight-bolder.text-uppercase.h5.p-2
     - if user_signed_in?
       =current_user.email
-      |&nbsp;
       -if current_user.rewards.present?
         =link_to 'Rewards', rewards_path, class:"nav-item nav-link"
       =link_to 'Sign out', destroy_user_session_path, method: :delete,  class:"nav-item nav-link"
     - else
       =link_to 'Sign in', new_user_session_path,  class:"nav-item nav-link"
-      |&nbsp;
+
       =link_to 'Registration', new_user_registration_path,  class:"nav-item nav-link"
 
+  .search-block.float-md-right
+    =link_to 'Search' , search_path, class:"btn btn-primary text-light"

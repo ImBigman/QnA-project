@@ -32,6 +32,8 @@ describe 'Ability' do
     let(:comment1) { create(:comment, commentable: question, user: user1) }
     let(:subscription) { create(:subscription, question: question, user: user) }
     let(:subscription1) { create(:subscription, question: question, user: user1) }
+    let(:search_request) { create(:search_request, user: user) }
+    let(:search_request1) { create(:search_request, user: user1) }
 
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }

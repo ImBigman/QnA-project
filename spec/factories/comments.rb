@@ -5,7 +5,7 @@ FactoryBot.define do
     user_id { nil }
 
     trait :invalid do
-      body { '123456789'}
+      body { '123456789' }
     end
   end
 end
