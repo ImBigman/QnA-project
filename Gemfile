@@ -38,6 +38,7 @@ gem 'doorkeeper'
 gem 'gon'
 gem 'handlebars-source', '~> 4.0', '>= 4.0.5'
 gem 'jquery-rails'
+gem 'mini_racer'
 gem 'mysql2'
 gem 'thinking-sphinx', '~> 4.4', '>= 4.4.1'
 gem 'octicons', '~> 9.4'
@@ -65,6 +66,12 @@ end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
+
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
