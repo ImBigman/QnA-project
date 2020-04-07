@@ -1,7 +1,6 @@
 {
   "name": "qna",
   "private": true,
-  "engines": {     "node": "12.16.1"   },
   "dependencies": {
     "@primer/octicons": "^9.4.0",
     "@rails/actioncable": "^6.0.0",
@@ -16,8 +15,7 @@
     "inotify": "^1.4.6",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.0",
-    "turbolinks": "^5.2.0",
-    "urix": "^0.1.0"
+    "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
