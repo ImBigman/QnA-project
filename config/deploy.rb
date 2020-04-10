@@ -13,3 +13,6 @@ append :linked_files, "config/database.yml", "config/master.key"
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/packs", ".bundle", "node_modules"
+
+set :init_system, :systemd
+set :service_unit_name, "sidekiq"
