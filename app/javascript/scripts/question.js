@@ -2,6 +2,7 @@ document.addEventListener('turbolinks:load', function() {
     let questionBlock = $('.question');
         questionBlock.on('click','#question-edit', function (event) {
         event.preventDefault();
+        $(this).parents(".col-12").attr('class', 'col-6')
         $(this).hide();
         $('.question-edit-form').show();
     });
