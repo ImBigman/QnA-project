@@ -16,3 +16,5 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/pack
 
 set :init_system, :systemd
 set :service_unit_name, "sidekiq"
+
+after 'deploy:publishing', 'unicorn:restart'
