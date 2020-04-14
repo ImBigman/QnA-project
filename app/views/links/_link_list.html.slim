@@ -1,15 +1,16 @@
-- resource.links.each do |link|
-  span class="attached-link-#{link.id}"
-    - if link.gist?
-      = link_to link.name, link.url
-      |&nbsp;
-      - if can? :update, resource
-        = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'
-      br
-      = javascript_link_tag(link)
-    - else
-      br
-      = link_to link.name, link.url
-      |&nbsp;
-      - if can? :update, resource
-        = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'
+-cache ['links_for', resource] do
+  - resource.links.each do |link|
+    span class="attached-link-#{link.id}"
+      - if link.gist?
+        = link_to link.name, link.url
+        |&nbsp;
+        - if can? :update, resource
+          = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'
+        br
+        = javascript_link_tag(link)
+      - else
+        br
+        = link_to link.name, link.url
+        |&nbsp;
+        - if can? :update, resource
+          = link_to  'delete', link_path(link), method: :delete, remote: true, class: 'text-danger', id: 'delete-attached-link'

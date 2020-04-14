@@ -6,10 +6,13 @@
       .row class='question_id_#{question.id}'
         =render 'shared/vote_selector', resource: question
         span.col-11.mt-2
-          =render 'questions/body'
+          -cache question do
+            =render 'questions/body'
   .col-6.pt-2.question-edit-form.hidden
-    =render 'questions/edit_form'
-=render 'subscriptions/subscription', question: question
+    -cache question do
+      =render 'questions/edit_form'
+-cache question.subscriptions do
+  =render 'subscriptions/subscription', question: question
 br
 -unless question.answers.empty?
   span.col-1
@@ -19,8 +22,10 @@ br
 .answer-edit-errors.ml-5.text-danger
   = render 'shared/errors', resource: @answer
 .answers
-  = render question.answers
-br
-.answer-errors.text-danger
-  = render 'shared/errors', resource: @answer
-= render 'answers/form'
+  -cache question.answers do
+    = render question.answers
+    br
+    .answer-errors.text-danger
+      -cache @answer.errors
+        = render 'shared/errors', resource: @answer
+    = render 'answers/form'

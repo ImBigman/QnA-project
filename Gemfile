@@ -48,6 +48,7 @@ gem 'omniauth', '~> 1.6', '>= 1.6.1'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
 gem 'popper_js', '~> 1.16'
+gem 'redis-rails'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim-rails'
