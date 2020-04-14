@@ -1,20 +1,23 @@
-p
-  strong Title:&nbsp;
-  span.question-title =question.title
-strong Question:&nbsp;
-span.question-body =question.body
-br
-strong from:&nbsp;
-span =question.user.email
-- if question.links.exists?
+-cache question do
+  p
+    strong Title:&nbsp;
+    span.question-title =question.title
+  strong Question:&nbsp;
+  span.question-body =question.body
   br
-  span.link style='font-size: 9pt'
-    =render 'links/link_list', resource: question
-- if question.files.attached?
+  strong from:&nbsp;
+  span =question.user.email
+  -cache question.links do
+    - if question.links.exists?
+      br
+      span.link style='font-size: 9pt'
+        =render 'links/link_list', resource: question
+  -cache question.files do
+    - if question.files.attached?
+      br
+      span.question-files
+        =render 'attachments/attachment', resource: question
   br
-  span.question-files
-    =render 'attachments/attachment', resource: question
-br
 - if can? :update, question
   -if question.reward.present?
     span.question-reward
@@ -33,7 +36,8 @@ br
 fieldset.question-comments
   legend.w-auto.text-primary style='font-size: 8pt' comments:
   -if question.comments.exists?
-    =render question.comments
+    -cache question.comments do
+      =render question.comments
   -else
     span.text-secondary.empty style='font-size: 10pt' 0 comment's
   =render 'comments/comment_form', resource: Comment.new, path: question_comments_path(question)

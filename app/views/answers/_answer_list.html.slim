@@ -1,39 +1,40 @@
 span class='answer_id_#{answer.id}_body'
-  = answer.body
-  - if can? :update, answer
-    span style='font-size: 8pt'
-      |&nbsp;
-      = link_to 'Edit', '', class: 'btn-sm btn-outline-info mt-3 answer-edit', data: { answer_id: answer.id }
-    span style='font-size: 8pt'
-      |&nbsp;
-      =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
-  span style='font-size: 9pt'
-    br
-    |&nbsp; answer's author:
-          #{answer.user.email}
-  - if answer.files.attached?
-    br
-    =render 'attachments/attachment', resource: answer
-  - if answer.links.exists?
+ -cache answer do
+    = answer.body
+    - if can? :update, answer
+      span style='font-size: 8pt'
+        |&nbsp;
+        = link_to 'Edit', '', class: 'btn-sm btn-outline-info mt-3 answer-edit', data: { answer_id: answer.id }
+      span style='font-size: 8pt'
+        |&nbsp;
+        =link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}, id: 'answer_delete', remote: true, class: ' btn-sm btn-outline-danger mt-3'
     span style='font-size: 9pt'
       br
-      |links:
-      = render 'links/link_list', resource: answer
-  .answer-comment-errors.text-danger style='font-size: 10pt'
-    = render 'shared/errors', resource: @comment
-  span
-    fieldset.answer-comments
-      legend.w-auto.text-primary style='font-size: 8pt' comments:
-      - if answer.comments.exists?
-        = render answer.comments
-      - else
-        span.text-secondary.empty style='font-size: 10pt' 0 comment's
-      = render 'comments/comment_form', resource: Comment.new, path: answer_comments_path(answer)
-    - if signed_in?
-      = content_tag(:span, class: 'text-primary comment-button', style: 'font-size: 8pt')
-        = octicon('comment', height: 16, class: 'mb-1')
-        = link_to ' add comment', '', id: 'answer-comment', style: 'text-decoration: none;', remote: true, data: { answer_id: answer.id }
-  - if can? :update, answer
+      |&nbsp; answer's author:
+            #{answer.user.email}
+    - if answer.files.attached?
+      br
+      =render 'attachments/attachment', resource: answer
+    - if answer.links.exists?
+      span style='font-size: 9pt'
+        br
+        |links:
+        = render 'links/link_list', resource: answer
+    .answer-comment-errors.text-danger style='font-size: 10pt'
+      = render 'shared/errors', resource: @comment
+    span
+      fieldset.answer-comments
+        legend.w-auto.text-primary style='font-size: 8pt' comments:
+        - if answer.comments.exists?
+          = render answer.comments
+        - else
+          span.text-secondary.empty style='font-size: 10pt' 0 comment's
+        = render 'comments/comment_form', resource: Comment.new, path: answer_comments_path(answer)
+      - if signed_in?
+        = content_tag(:span, class: 'text-primary comment-button', style: 'font-size: 8pt')
+          = octicon('comment', height: 16, class: 'mb-1')
+          = link_to ' add comment', '', id: 'answer-comment', style: 'text-decoration: none;', remote: true, data: { answer_id: answer.id }
+    - if can? :update, answer
     span class ="edit-answer-#{answer.id} hidden"
       = simple_form_for answer, class: 'hidden ml-1',  remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
         = f.text_area :body, style: 'width: 60%'
@@ -50,4 +51,4 @@ span class='answer_id_#{answer.id}_body'
           br
         = f.file_field :files, multiple: true,  direct_upload: true, style: 'width: 30%', class: 'btn-sm form-control-file mr-3 mb-2'
         = f.submit 'Save', class: 'btn btn-outline-info btn-sm'
-  br
+br
