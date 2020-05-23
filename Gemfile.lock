@@ -264,9 +264,9 @@ GEM
     pg (1.2.2-x86-mingw32)
     popper_js (1.16.0)
     public_suffix (4.0.3)
-    puma (4.3.3)
+    puma (4.3.5)
       nio4r (~> 2.0)
-    puma (4.3.3-java)
+    puma (4.3.5-java)
       nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
@@ -502,7 +502,7 @@ DEPENDENCIES
   omniauth-vkontakte
   pg (>= 0.18, < 2.0)
   popper_js (~> 1.16)
-  puma (~> 4.3, >= 4.3.3)
+  puma (~> 4.3)
   rails (~> 6.0.2, >= 6.0.2.1)
   rails-controller-testing
   redis-rails
