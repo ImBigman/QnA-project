@@ -1,16 +1,12 @@
 QnA project.
 * Ruby version 2.6.3
 
-Use gems's: 
-* 'active_model_serializers'
-* 'aws-sdk-s3'
+Use gems's:
 * 'bootstrap'
 * 'cancancan'
 * 'cocoon'
 * 'devise'
 * 'doorkeeper'
-* 'gon'
-* 'handlebars-source'
 * 'jquery-rails'
 * 'thinking-sphinx'
 * 'omniauth'
@@ -18,7 +14,6 @@ Use gems's:
 * 'omniauth-vkontakte'
 * 'redis-rails'
 * 'sidekiq'
-* 'simple_form'
 * 'unicorn'
 * 'whenever'
 
