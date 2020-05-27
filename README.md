@@ -11,17 +11,17 @@
 * Subscription for notification
 * Adding images / gists / links for more information
 
-Use gems in project:
-* bootstrap
-* jquery-rails
-* cocoon
-* doorkeeper
-* thinking-sphinx
-* devise
-* omniauth
-* omniauth-github
-* omniauth-vkontakte
-* cancancan
-* redis-rails
-* sidekiq
+  Use gems in project:
+  * bootstrap
+  * jquery-rails
+  * cocoon
+  * doorkeeper
+  * thinking-sphinx
+  * devise
+  * omniauth
+  * omniauth-github
+  * omniauth-vkontakte
+  * cancancan
+  * redis-rails
+  * sidekiq
 
