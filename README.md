@@ -11,7 +11,7 @@
 * Subscription for notification
 * Adding images / gists / links for more information
 
-Use gems's in project:
+Use gems in project:
 * bootstrap
 * jquery-rails
 * cocoon
