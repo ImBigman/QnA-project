@@ -1,26 +1,33 @@
-QnA project.
-* Ruby version 2.6.3
+![QnA Logo](/public/images/android-chrome-192x192.png "QnA Logo") QnA project.
 
-Use gems's:
-* 'bootstrap'
-* 'cancancan'
-* 'cocoon'
-* 'devise'
-* 'doorkeeper'
-* 'jquery-rails'
-* 'thinking-sphinx'
-* 'omniauth'
-* 'omniauth-github'
-* 'omniauth-vkontakte'
-* 'redis-rails'
-* 'sidekiq'
-* 'unicorn'
-* 'whenever'
+# Features
 
-for deploy:
-  * 'capistrano'
-  * 'capistrano-bundler'
-  * 'capistrano-rails'
-  * 'capistrano-rvm'
-  * 'capistrano-sidekiq'
-  * 'capistrano3-unicorn'
+* Creating question / answers / comments
+* Question author can choice best answer
+* Users can vote for answer
+* Email notifications for updates
+* Subscription for notification
+* Adding images / gists / links for more information
+
+# Use gems's in project:
+
+* bootstrap
+* jquery-rails
+* cocoon
+* doorkeeper
+* thinking-sphinx
+* devise
+* omniauth
+* omniauth-github
+* omniauth-vkontakte
+* cancancan
+* redis-rails
+* sidekiq
+
+ for deploy: 
+   * 'capistrano'
+   * 'capistrano-bundler'
+   * 'capistrano-rails'
+   * 'capistrano-rvm'
+   * 'capistrano-sidekiq'
+   * 'capistrano3-unicorn'
