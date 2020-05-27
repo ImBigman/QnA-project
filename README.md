@@ -1,4 +1,4 @@
-![QnA Logo](/public/images/android-chrome-192x192.png "QnA Logo") QnA project.
+![QnA Logo](/assets/images/android-chrome-192x192.png "QnA Logo") QnA project.
 
 # Features
 
@@ -9,8 +9,7 @@
 * Subscription for notification
 * Adding images / gists / links for more information
 
-# Use gems's in project:
-
+Use gems's in project:
 * bootstrap
 * jquery-rails
 * cocoon
@@ -24,10 +23,3 @@
 * redis-rails
 * sidekiq
 
- for deploy: 
-   * 'capistrano'
-   * 'capistrano-bundler'
-   * 'capistrano-rails'
-   * 'capistrano-rvm'
-   * 'capistrano-sidekiq'
-   * 'capistrano3-unicorn'
