@@ -37,6 +37,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # config.active_storage.service = :local
+  config.active_storage.service = :amazon
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
@@ -55,23 +56,23 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
-  config.active_storage.service = :amazon
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "qna_production"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: '161.35.18.237'}
+  config.action_mailer.default_url_options = { host: Rails.application.credentials[:hostname] }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    tls: true,
-    address: "smtp.yandex.com",
-    port: 465,
+    tls: Rails.application.credentials[:email][:smtp_tls] || true,
+    address: Rails.application.credentials[:email][:smtp_server] || "smtp.yandex.com",
+    port: Rails.application.credentials[:email][:smtp_port] || 465,
     user_name: Rails.application.credentials[:email][:user_name],
     password:  Rails.application.credentials[:email][:password],
+    domain:  Rails.application.credentials[:email][:domain] || Rails.application.credentials[:hostname],
     authentication: "plain",
-    enable_starttls_auto: true
+    enable_starttls_auto: Rails.application.credentials[:email][:enable_starttls] || true,
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
